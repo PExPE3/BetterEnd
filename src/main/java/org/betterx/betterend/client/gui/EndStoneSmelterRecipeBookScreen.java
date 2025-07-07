@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,9 @@ public class EndStoneSmelterRecipeBookScreen extends BlastingRecipeBookComponent
 
     @Override
     protected Set<Item> getFuelItems() {
-        return EndStoneSmelterBlockEntity.availableFuels().keySet();
+        Set<Item> fuelItems = new HashSet<>(EndStoneSmelterBlockEntity.availableFuels().keySet());
+
+        return fuelItems;
     }
 
     @Override

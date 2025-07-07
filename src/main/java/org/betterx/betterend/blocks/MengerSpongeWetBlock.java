@@ -27,12 +27,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @SuppressWarnings("deprecation")
 public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLayerProvider {
     public MengerSpongeWetBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.WET_SPONGE).noOcclusion());
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.WET_SPONGE).noOcclusion());
     }
 
     @Override

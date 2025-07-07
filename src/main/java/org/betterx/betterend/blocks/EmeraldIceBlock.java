@@ -22,19 +22,19 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayerProvider, RuntimeBlockModelProvider, BehaviourIce, BlockLootProvider {
     public EmeraldIceBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.ICE));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.ICE));
     }
 
     @Override
@@ -44,12 +44,12 @@ public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayer
 
     @Override
     public void playerDestroy(
-            Level world,
-            Player player,
-            BlockPos pos,
-            BlockState state,
+            @NotNull Level world,
+            @NotNull Player player,
+            @NotNull BlockPos pos,
+            @NotNull BlockState state,
             @Nullable BlockEntity blockEntity,
-            ItemStack stack
+            @NotNull ItemStack stack
     ) {
         super.playerDestroy(world, player, pos, state, blockEntity, stack);
         if (EnchantmentUtils.getItemEnchantmentLevel(world, Enchantments.SILK_TOUCH, stack) == 0) {
@@ -67,20 +67,19 @@ public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayer
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (world.getBrightness(LightLayer.BLOCK, pos) > 11 - state.getLightBlock(world, pos)) {
-            this.melt(state, world, pos);
+    public void randomTick(BlockState state, ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (world.getBrightness(LightLayer.BLOCK, pos) > 11 - state.getLightBlock()) {
+            this.melt(world, pos);
         }
 
     }
 
-    protected void melt(BlockState state, Level world, BlockPos pos) {
+    protected void melt(Level world, BlockPos pos) {
         if (world.dimensionType().ultraWarm()) {
             world.removeBlock(pos, false);
         } else {
             world.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
-            world.neighborChanged(pos, Blocks.WATER, pos);
+            world.neighborChanged(pos, Blocks.WATER, null);
         }
     }
 

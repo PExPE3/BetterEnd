@@ -2,6 +2,7 @@ package org.betterx.betterend.client.gui.slot;
 
 import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -41,8 +42,8 @@ public class SmelterOutputSlot extends Slot {
 
     protected void checkTakeAchievements(ItemStack stack) {
         stack.onCraftedBy(this.player.level(), this.player, this.amount);
-        if (!this.player.level().isClientSide && this.container instanceof EndStoneSmelterBlockEntity) {
-            ((EndStoneSmelterBlockEntity) this.container).dropExperience(player);
+        if (player instanceof ServerPlayer serverPlayer && this.container instanceof EndStoneSmelterBlockEntity) {
+            ((EndStoneSmelterBlockEntity) this.container).dropExperience(serverPlayer);
         }
         this.amount = 0;
     }

@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class VentBubbleColumnBlock extends Block implements BucketPickup, LiquidBlockContainer {
     public VentBubbleColumnBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.BUBBLE_COLUMN).nonOpaque().noCollision().noLootTable());
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).nonOpaque().noCollision().noLootTable());
     }
 
     @Override

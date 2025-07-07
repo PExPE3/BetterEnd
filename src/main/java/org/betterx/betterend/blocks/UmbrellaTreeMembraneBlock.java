@@ -25,7 +25,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 
@@ -37,7 +37,7 @@ public class UmbrellaTreeMembraneBlock extends SlimeBlock implements RenderLayer
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(0);
 
     public UmbrellaTreeMembraneBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK));
     }
 
     @Override

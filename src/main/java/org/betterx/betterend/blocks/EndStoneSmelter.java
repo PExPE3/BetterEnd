@@ -9,6 +9,7 @@ import org.betterx.betterend.registry.EndBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -38,6 +39,7 @@ import net.fabricmc.api.Environment;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements AlloyingRecipeWorkstation {
@@ -169,14 +171,19 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-            Level level,
-            BlockState blockState,
-            BlockEntityType<T> blockEntityType
+            @NotNull Level level,
+            @NotNull BlockState inputBlockState,
+            @NotNull BlockEntityType<T> inputBlockEntityType
     ) {
-        return level.isClientSide() ? null : createTickerHelper(
-                blockEntityType,
+        return level instanceof ServerLevel serverLevel
+                ? createTickerHelper(
+                inputBlockEntityType,
                 EndBlockEntities.END_STONE_SMELTER,
-                EndStoneSmelterBlockEntity::tick
-        );
+                (__, blockPos, blockState, abstractFurnaceBlockEntity) ->
+                        EndStoneSmelterBlockEntity.serverTick(
+                                serverLevel, blockPos, blockState, abstractFurnaceBlockEntity
+                        )
+        )
+                : null;
     }
 }

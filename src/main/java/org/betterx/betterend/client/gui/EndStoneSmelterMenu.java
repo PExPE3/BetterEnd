@@ -11,7 +11,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -78,7 +78,7 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents finder) {
+    public void fillCraftSlotsStackedContents(StackedItemContents finder) {
         if (inventory instanceof StackedContentsCompatible) {
             ((StackedContentsCompatible) inventory).fillStackedContents(finder);
         }
@@ -95,7 +95,12 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     public boolean recipeMatches(RecipeHolder<AlloyingRecipe> recipeHolder) {
         return recipeHolder
                 .value()
-                .matches(new AlloyingRecipeInput(this.inventory.getItem(INGREDIENT_SLOT_A), this.inventory.getItem(INGREDIENT_SLOT_B)), this.world);
+                .matches(
+                        new AlloyingRecipeInput(
+                                this.inventory.getItem(INGREDIENT_SLOT_A),
+                                this.inventory.getItem(INGREDIENT_SLOT_B)
+                        ), this.world
+                );
     }
 
     @Override
@@ -134,13 +139,13 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     protected boolean isSmeltable(ItemStack itemStack) {
-        return world.getRecipeManager()
+        return world.recipeAccess()
                     .getRecipeFor(AlloyingRecipe.TYPE, new AlloyingRecipeInput(itemStack), world)
                     .isPresent();
     }
 
-    public boolean isFuel(ItemStack itemStack) {
-        return EndStoneSmelterBlockEntity.canUseAsFuel(itemStack);
+    public boolean isFuel(ItemStack fuelStack) {
+        return EndStoneSmelterBlockEntity.canUseAsFuel(this.world, fuelStack);
     }
 
     @Override

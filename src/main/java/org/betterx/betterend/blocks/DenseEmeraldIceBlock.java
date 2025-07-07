@@ -12,13 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.NotNull;
 
 public class DenseEmeraldIceBlock extends BaseBlock implements RenderLayerProvider, BehaviourIce, BlockLootProvider {
     public DenseEmeraldIceBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.PACKED_ICE));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE));
     }
 
     @Override

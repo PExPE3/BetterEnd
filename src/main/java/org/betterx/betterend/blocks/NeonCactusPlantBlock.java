@@ -36,7 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -60,7 +60,7 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     private static final int MAX_LENGTH = 12;
 
     public NeonCactusPlantBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                 .setValue(FACING, Direction.UP)
                                                 .setValue(SHAPE, TripleShape.TOP));
