@@ -29,7 +29,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.JukeboxSong;
 
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
@@ -144,8 +146,10 @@ public class EndItems {
     public static final Item CRYSTALITE_ELYTRA = registerEndItem("elytra_crystalite", new CrystaliteElytra(650, 1.0D));
 
     // Tools //
-    public static final TieredItem AETERNIUM_SHOVEL = registerEndTool("aeternium_shovel", new BaseShovelItem(
-            EndToolMaterial.AETERNIUM, 1.5F, -3.0F, makeEndItemSettings().fireResistant()));
+    public static final TieredItem AETERNIUM_SHOVEL = registerEndTool(
+            "aeternium_shovel", new BaseShovelItem(
+                    EndToolMaterial.AETERNIUM, 1.5F, -3.0F, makeEndItemSettings().fireResistant())
+    );
     public static final TieredItem AETERNIUM_SWORD = registerEndTool(
             "aeternium_sword",
             new BaseSwordItem(
@@ -224,7 +228,7 @@ public class EndItems {
     );
 
     // ITEM_HAMMERS //
-    public static final TieredItem IRON_HAMMER = registerEndTool(
+    public static final Item IRON_HAMMER = registerEndTool(
             "iron_hammer",
             new EndHammerItem(
                     Tiers.IRON,
@@ -234,7 +238,7 @@ public class EndItems {
                     makeEndItemSettings()
             )
     );
-    public static final TieredItem GOLDEN_HAMMER = registerEndTool(
+    public static final Item GOLDEN_HAMMER = registerEndTool(
             "golden_hammer",
             new EndHammerItem(
                     Tiers.GOLD,
@@ -244,7 +248,7 @@ public class EndItems {
                     makeEndItemSettings()
             )
     );
-    public static final TieredItem DIAMOND_HAMMER = registerEndTool(
+    public static final Item DIAMOND_HAMMER = registerEndTool(
             "diamond_hammer",
             new EndHammerItem(
                     Tiers.DIAMOND,
@@ -328,9 +332,11 @@ public class EndItems {
     }
 
     public static Item registerEndFood(String name, FoodProperties foodComponent) {
-        return getItemRegistry().register(name, new ModelProviderItem(getItemRegistry()
-                .createDefaultItemSettings()
-                .food(foodComponent)));
+        return getItemRegistry().register(
+                name, new ModelProviderItem(getItemRegistry()
+                        .createDefaultItemSettings()
+                        .food(foodComponent))
+        );
     }
 
     public static Item registerEndDrink(String name, int hunger, float saturation) {

@@ -12,14 +12,14 @@ import org.betterx.wover.core.api.IntegrationCore;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverModelProvider;
 
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,37 +43,82 @@ public class EndModelProvider extends WoverModelProvider {
                 ModelOverides.create()
                              .override(EndBlocks.TWISTED_VINE, createTwistedVineModel(generator))
                              .override(EndBlocks.AMBER_MOSS, createAmberMossModel(generator))
-                             .override(EndBlocks.AMBER_MOSS_PATH, createAmberMossPathModel(generator, EndBlocks.AMBER_MOSS))
-                             .override(EndBlocks.QUARTZ_PEDESTAL, block -> PedestalBlock.provideBlockModel(generator, new TextureMapping()
-                                     .put(TextureSlot.TOP, IntegrationCore.MINECRAFT.mk("block/quartz_pillar_top"))
-                                     .put(TextureSlot.BOTTOM, IntegrationCore.MINECRAFT.mk("block/quartz_block_bottom"))
-                                     .put(EndModels.BASE, IntegrationCore.MINECRAFT.mk("block/quartz_block_side"))
-                                     .put(EndModels.PILLAR, IntegrationCore.MINECRAFT.mk("block/quartz_pillar")), block))
-                             .override(EndBlocks.PURPUR_PEDESTAL, block -> PedestalBlock.provideBlockModel(generator, new TextureMapping()
-                                     .put(TextureSlot.TOP, IntegrationCore.MINECRAFT.mk("block/purpur_pillar_top"))
-                                     .put(TextureSlot.BOTTOM, IntegrationCore.MINECRAFT.mk("block/purpur_block"))
-                                     .put(EndModels.BASE, IntegrationCore.MINECRAFT.mk("block/purpur_block"))
-                                     .put(EndModels.PILLAR, IntegrationCore.MINECRAFT.mk("block/purpur_pillar")), block))
-                             .override(EndBlocks.NEON_CACTUS_BLOCK_STAIRS, block -> {
-                                 final var id = TextureMapping.getBlockTexture(block);
-                                 final var texture = BetterEnd.C.mk("block/neon_cactus_block");
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.TOP, texture.withSuffix("_top"))
-                                         .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 final var stairs = EndModels.LIT_STAIRS.create(id, mapping, generator.modelOutput());
-                                 final var stairs_outer = EndModels.LIT_STAIRS_OUTER.create(id.withSuffix("_outer"), mapping, generator.modelOutput());
-                                 final var stairs_inner = EndModels.LIT_STAIRS_INNER.create(id.withSuffix("_inner"), mapping, generator.modelOutput());
-                                 generator.createStairsWithModels(block, stairs, stairs_outer, stairs_inner);
-                             }).override(EndBlocks.NEON_CACTUS_BLOCK_SLAB, block -> {
-                                 final var id = TextureMapping.getBlockTexture(block);
-                                 final var texture = TextureMapping.getBlockTexture(EndBlocks.NEON_CACTUS_BLOCK);
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.TOP, texture.withSuffix("_top"))
-                                         .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 generator.createSlab(block, EndBlocks.NEON_CACTUS_BLOCK, mapping);
-                             })
+                             .override(
+                                     EndBlocks.AMBER_MOSS_PATH,
+                                     createAmberMossPathModel(generator, EndBlocks.AMBER_MOSS)
+                             )
+                             .override(
+                                     EndBlocks.QUARTZ_PEDESTAL, block -> PedestalBlock.provideBlockModel(
+                                             generator, new TextureMapping()
+                                                     .put(
+                                                             TextureSlot.TOP,
+                                                             IntegrationCore.MINECRAFT.mk("block/quartz_pillar_top")
+                                                     )
+                                                     .put(
+                                                             TextureSlot.BOTTOM,
+                                                             IntegrationCore.MINECRAFT.mk("block/quartz_block_bottom")
+                                                     )
+                                                     .put(
+                                                             EndModels.BASE,
+                                                             IntegrationCore.MINECRAFT.mk("block/quartz_block_side")
+                                                     )
+                                                     .put(
+                                                             EndModels.PILLAR,
+                                                             IntegrationCore.MINECRAFT.mk("block/quartz_pillar")
+                                                     ), block
+                                     )
+                             )
+                             .override(
+                                     EndBlocks.PURPUR_PEDESTAL, block -> PedestalBlock.provideBlockModel(
+                                             generator, new TextureMapping()
+                                                     .put(
+                                                             TextureSlot.TOP,
+                                                             IntegrationCore.MINECRAFT.mk("block/purpur_pillar_top")
+                                                     )
+                                                     .put(
+                                                             TextureSlot.BOTTOM,
+                                                             IntegrationCore.MINECRAFT.mk("block/purpur_block")
+                                                     )
+                                                     .put(
+                                                             EndModels.BASE,
+                                                             IntegrationCore.MINECRAFT.mk("block/purpur_block")
+                                                     )
+                                                     .put(
+                                                             EndModels.PILLAR,
+                                                             IntegrationCore.MINECRAFT.mk("block/purpur_pillar")
+                                                     ), block
+                                     )
+                             )
+                             .override(
+                                     EndBlocks.NEON_CACTUS_BLOCK_STAIRS, block -> {
+                                         final var id = TextureMapping.getBlockTexture(block);
+                                         final var texture = BetterEnd.C.mk("block/neon_cactus_block");
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.TOP, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         final var stairs = EndModels.LIT_STAIRS.create(
+                                                 id,
+                                                 mapping,
+                                                 generator.modelOutput()
+                                         );
+                                         final var stairs_outer = EndModels.LIT_STAIRS_OUTER.create(
+                                                 id.withSuffix("_outer"), mapping, generator.modelOutput());
+                                         final var stairs_inner = EndModels.LIT_STAIRS_INNER.create(
+                                                 id.withSuffix("_inner"), mapping, generator.modelOutput());
+                                         generator.createStairsWithModels(block, stairs, stairs_outer, stairs_inner);
+                                     }
+                             ).override(
+                                     EndBlocks.NEON_CACTUS_BLOCK_SLAB, block -> {
+                                         final var id = TextureMapping.getBlockTexture(block);
+                                         final var texture = TextureMapping.getBlockTexture(EndBlocks.NEON_CACTUS_BLOCK);
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.TOP, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         generator.createSlab(block, EndBlocks.NEON_CACTUS_BLOCK, mapping);
+                                     }
+                             )
                              .ignore(EndBlocks.CRYSTAL_GRASS)
                              .ignore(EndBlocks.CYAN_MOSS)
                              .override(EndBlocks.AERIDIUM, generator::createFlatItem)
@@ -90,35 +135,43 @@ public class EndModelProvider extends WoverModelProvider {
                              .ignore(EndBlocks.SMARAGDANT_SUBBLOCKS.wall)
                              .ignore(EndBlocks.SMARAGDANT_SUBBLOCKS.brick_stairs)
                              .ignore(EndBlocks.SMARAGDANT_SUBBLOCKS.brick_wall)
-                             .override(EndBlocks.SMARAGDANT_CRYSTAL, block -> {
-                                 final var texture = BetterEnd.C.mk("block/smaragdant_crystal");
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.END, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 generator.createRotatedPillar(block, mapping);
-                             })
-                             .override(EndBlocks.BUDDING_SMARAGDANT_CRYSTAL, block -> {
-                                 final var texture = BetterEnd.C.mk("block/budding_smaragdant_crystal");
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.END, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 generator.createRotatedPillar(block, mapping);
-                             })
-                             .override(EndBlocks.SMARAGDANT_SUBBLOCKS.slab, block -> {
-                                 final var texture = BetterEnd.C.mk("block/smaragdant_crystal");
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.TOP, texture.withSuffix("_top"))
-                                         .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 generator.createSlab(block, EndBlocks.SMARAGDANT_CRYSTAL, mapping);
-                             })
-                             .override(EndBlocks.SMARAGDANT_SUBBLOCKS.pillar, block -> {
-                                 final var texture = BetterEnd.C.mk("block/smaragdant_crystal_pillar");
-                                 final var mapping = new TextureMapping()
-                                         .put(TextureSlot.END, texture.withSuffix("_top"))
-                                         .put(TextureSlot.SIDE, texture.withSuffix("_side"));
-                                 generator.createRotatedPillar(block, mapping);
-                             })
+                             .override(
+                                     EndBlocks.SMARAGDANT_CRYSTAL, block -> {
+                                         final var texture = BetterEnd.C.mk("block/smaragdant_crystal");
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.END, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         generator.createRotatedPillar(block, mapping);
+                                     }
+                             )
+                             .override(
+                                     EndBlocks.BUDDING_SMARAGDANT_CRYSTAL, block -> {
+                                         final var texture = BetterEnd.C.mk("block/budding_smaragdant_crystal");
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.END, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         generator.createRotatedPillar(block, mapping);
+                                     }
+                             )
+                             .override(
+                                     EndBlocks.SMARAGDANT_SUBBLOCKS.slab, block -> {
+                                         final var texture = BetterEnd.C.mk("block/smaragdant_crystal");
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.TOP, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.BOTTOM, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         generator.createSlab(block, EndBlocks.SMARAGDANT_CRYSTAL, mapping);
+                                     }
+                             )
+                             .override(
+                                     EndBlocks.SMARAGDANT_SUBBLOCKS.pillar, block -> {
+                                         final var texture = BetterEnd.C.mk("block/smaragdant_crystal_pillar");
+                                         final var mapping = new TextureMapping()
+                                                 .put(TextureSlot.END, texture.withSuffix("_top"))
+                                                 .put(TextureSlot.SIDE, texture.withSuffix("_side"));
+                                         generator.createRotatedPillar(block, mapping);
+                                     }
+                             )
 //                             .ignore(EndBlocks.GOLD_CHANDELIER)
 //                             .ignore(EndBlocks.IRON_CHANDELIER)
                              .ignore(EndBlocks.LUCERNIA_OUTER_LEAVES)
@@ -134,10 +187,28 @@ public class EndModelProvider extends WoverModelProvider {
                              .ignore(EndBlocks.FILALUX)
                              .ignore(EndBlocks.CREEPING_MOSS)
                              .ignore(EndBlocks.RESPAWN_OBELISK)
-                             .override(EndBlocks.TWISTED_UMBRELLA_MOSS, b -> generator.createFlatItem(b, BetterEnd.C.mk("item/twisted_umbrella_moss_small")))
-                             .override(EndBlocks.TWISTED_UMBRELLA_MOSS_TALL, b -> generator.createFlatItem(b, BetterEnd.C.mk("item/twisted_umbrella_moss_large")))
-                             .override(EndBlocks.UMBRELLA_MOSS, b -> generator.createFlatItem(b, BetterEnd.C.mk("item/umbrella_moss_small")))
-                             .override(EndBlocks.UMBRELLA_MOSS_TALL, b -> generator.createFlatItem(b, BetterEnd.C.mk("item/umbrella_moss_large")))
+                             .override(
+                                     EndBlocks.TWISTED_UMBRELLA_MOSS,
+                                     b -> generator.createFlatItem(
+                                             b,
+                                             BetterEnd.C.mk("item/twisted_umbrella_moss_small")
+                                     )
+                             )
+                             .override(
+                                     EndBlocks.TWISTED_UMBRELLA_MOSS_TALL,
+                                     b -> generator.createFlatItem(
+                                             b,
+                                             BetterEnd.C.mk("item/twisted_umbrella_moss_large")
+                                     )
+                             )
+                             .override(
+                                     EndBlocks.UMBRELLA_MOSS,
+                                     b -> generator.createFlatItem(b, BetterEnd.C.mk("item/umbrella_moss_small"))
+                             )
+                             .override(
+                                     EndBlocks.UMBRELLA_MOSS_TALL,
+                                     b -> generator.createFlatItem(b, BetterEnd.C.mk("item/umbrella_moss_large"))
+                             )
                              .ignore(EndBlocks.BLOSSOM_BERRY)
                              .ignore(EndBlocks.CAVE_PUMPKIN_SEED)
                              .ignore(EndBlocks.CHORUS_MUSHROOM)
@@ -216,17 +287,29 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.TAIL_MOSS, generator::createFlatItem)
                              .override(EndBlocks.SULPHURIC_ROCK.stone, generator::delegateItemModel)
                              .override(EndBlocks.TENANEA_OUTER_LEAVES, generator::delegateItemModel)
-                             .override(EndBlocks.UMBRALITH.stone, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/umbralith_5")))
+                             .override(
+                                     EndBlocks.UMBRALITH.stone,
+                                     b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/umbralith_5"))
+                             )
                              .override(EndBlocks.TWISTED_MOSS, generator::createFlatItem)
                              .override(EndBlocks.VAIOLUSH_FERN, generator::createFlatItem)
                              .ignore(EndBlocks.BRIMSTONE)
                              .override(EndBlocks.HELIX_TREE_LEAVES, generator::delegateItemModel)
                              .override(EndBlocks.MENGER_SPONGE, generator::delegateItemModel)
                              .override(EndBlocks.MENGER_SPONGE_WET, generator::delegateItemModel)
-                             .override(EndBlocks.VIOLECITE.brickWall, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/violecite_bricks_wall_post")))
+                             .override(
+                                     EndBlocks.VIOLECITE.brickWall,
+                                     b -> generator.delegateItemModel(
+                                             b,
+                                             BetterEnd.C.mk("block/violecite_bricks_wall_post")
+                                     )
+                             )
                              .override(EndBlocks.DRAGON_TREE.getBark(), generator::delegateItemModel)
                              .override(EndBlocks.DRAGON_TREE.getLog(), generator::delegateItemModel)
-                             .override(EndBlocks.NEON_CACTUS, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/neon_cactus_small")))
+                             .override(
+                                     EndBlocks.NEON_CACTUS,
+                                     b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/neon_cactus_small"))
+                             )
                              .ignore(EndBlocks.AMARANITA_STEM)
                              .ignore(EndBlocks.MOSSY_DRAGON_BONE)
         );
@@ -303,10 +386,30 @@ public class EndModelProvider extends WoverModelProvider {
                     .put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(block))
                     .put(EndModels.ROOTS, TextureMapping.getBlockTexture(block, "_roots"));
 
-            var bottom_1 = EndModels.CROSS_NO_DISTORTION.createWithSuffix(block, "_bottom_1", bottomMapping, generator.modelOutput());
-            var bottom_2 = EndModels.CROSS_NO_DISTORTION_INVERTED.createWithSuffix(block, "_bottom_2", bottomMapping, generator.modelOutput());
-            var middle_1 = EndModels.CROSS_NO_DISTORTION.createWithSuffix(block, "_middle_1", middleMapping, generator.modelOutput());
-            var middle_2 = EndModels.CROSS_NO_DISTORTION_INVERTED.createWithSuffix(block, "_middle_2", middleMapping, generator.modelOutput());
+            var bottom_1 = EndModels.CROSS_NO_DISTORTION.createWithSuffix(
+                    block,
+                    "_bottom_1",
+                    bottomMapping,
+                    generator.modelOutput()
+            );
+            var bottom_2 = EndModels.CROSS_NO_DISTORTION_INVERTED.createWithSuffix(
+                    block,
+                    "_bottom_2",
+                    bottomMapping,
+                    generator.modelOutput()
+            );
+            var middle_1 = EndModels.CROSS_NO_DISTORTION.createWithSuffix(
+                    block,
+                    "_middle_1",
+                    middleMapping,
+                    generator.modelOutput()
+            );
+            var middle_2 = EndModels.CROSS_NO_DISTORTION_INVERTED.createWithSuffix(
+                    block,
+                    "_middle_2",
+                    middleMapping,
+                    generator.modelOutput()
+            );
             var top = EndModels.TWISTED_VINE.createWithSuffix(block, "_top", topMapping, generator.modelOutput());
 
             generator.acceptBlockState(MultiVariantGenerator

@@ -6,8 +6,8 @@ import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 
@@ -32,6 +32,12 @@ public class GlowingHymenophoreBlock extends BaseBlock.Wood implements AddMineab
             WoverBlockModelGenerators generator,
             Block glowingHymenophoreBlock
     ) {
-        generator.acceptBlockState(BlockModelGenerators.createSimpleBlock(glowingHymenophoreBlock, EndModels.CUBE_NO_SHADE.create(glowingHymenophoreBlock, TextureMapping.defaultTexture(glowingHymenophoreBlock), generator.modelOutput())));
+        generator.acceptBlockState(BlockModelGenerators.createSimpleBlock(glowingHymenophoreBlock,
+                EndModels.CUBE_NO_SHADE.create(
+                        glowingHymenophoreBlock,
+                        TextureMapping.defaultTexture(glowingHymenophoreBlock),
+                        generator.modelOutput()
+                )
+        ));
     }
 }

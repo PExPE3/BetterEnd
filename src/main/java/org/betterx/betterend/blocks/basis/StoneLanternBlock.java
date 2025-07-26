@@ -8,14 +8,14 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -66,7 +66,12 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(this, "_side"))
                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(this, "_bottom"));
 
-        final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(this, "_floor", mapping, generator.modelOutput());
+        final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(
+                this,
+                "_floor",
+                mapping,
+                generator.modelOutput()
+        );
         final var ceilModel = BCLModels.STONE_LANTERN_CEIL.create(this, mapping, generator.modelOutput());
 
         generator.acceptBlockState(MultiVariantGenerator

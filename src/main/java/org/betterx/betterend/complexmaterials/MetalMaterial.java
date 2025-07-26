@@ -86,6 +86,7 @@ public class MetalMaterial implements MaterialManager.Material {
     public final Item boots;
 
     public final TagKey<Item> alloyingOre;
+    public final TagKey<Item> repairItems;
     public final SmithingTemplateItem swordHandleTemplate;
 
     public final boolean hasOre;
@@ -173,6 +174,7 @@ public class MetalMaterial implements MaterialManager.Material {
         rawOre = hasOre ? EndItems.registerEndItem(name + "_raw", new ModelProviderItem(itemSettings)) : null;
         ore = hasOre ? EndBlocks.registerBlock(name + "_ore", new BaseOreBlock(() -> rawOre, 1, 3, 1)) : null;
         alloyingOre = hasOre ? TagManager.ITEMS.makeTag(BetterEnd.C, name + "_alloying") : null;
+        repairItems = TagManager.ITEMS.makeTag(BetterEnd.C, "repair/" + name);
 
 
         block = EndBlocks.registerBlock(name + "_block", new BaseBlock.Metal(settings));

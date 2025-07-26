@@ -2,13 +2,11 @@ package org.betterx.betterend.item.material;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.item.api.armor.CustomArmorMaterial;
 
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.ArmorMaterial;
 
 public class EndArmorMaterial {
     public static final Holder<ArmorMaterial> THALLASIUM = CustomArmorMaterial
@@ -18,7 +16,7 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
             .toughness(0.0f)
             .knockbackResistance(0.0f)
-            .repairIngredientSupplier(() -> Ingredient.of(EndBlocks.THALLASIUM.ingot))
+            .repairIngredient(EndBlocks.THALLASIUM.repairItems)
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> TERMINITE = CustomArmorMaterial
@@ -28,7 +26,7 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
             .toughness(1.0f)
             .knockbackResistance(0.05f)
-            .repairIngredientSupplier(() -> Ingredient.of(EndBlocks.TERMINITE.ingot))
+            .repairIngredient(EndBlocks.TERMINITE.repairItems)
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> AETERNIUM = CustomArmorMaterial
@@ -38,7 +36,8 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .toughness(3.5f)
             .knockbackResistance(0.2f)
-            .repairIngredientSupplier(() -> Ingredient.of(EndItems.AETERNIUM_INGOT))
+            .repairIngredient(EndBlocks.AETERNIUM.repairItems)
+
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> CRYSTALITE = CustomArmorMaterial
@@ -48,6 +47,6 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .toughness(1.2f)
             .knockbackResistance(0.1f)
-            .repairIngredientSupplier(() -> Ingredient.of(EndBlocks.TERMINITE.ingot))
+            .repairIngredient(EndBlocks.TERMINITE.repairItems)
             .buildAndRegister();
 }

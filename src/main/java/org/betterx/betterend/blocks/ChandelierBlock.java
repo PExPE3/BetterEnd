@@ -7,21 +7,20 @@ import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Maps;
 
@@ -32,10 +31,10 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
 
     public ChandelierBlock(Block source) {
         super(BlockBehaviour.Properties.ofFullCopy(source)
-                                 .lightLevel((bs) -> 15)
-                                 .noCollission()
-                                 .noOcclusion()
-                                 .requiresCorrectToolForDrops());
+                                       .lightLevel((bs) -> 15)
+                                       .noCollission()
+                                       .noOcclusion()
+                                       .requiresCorrectToolForDrops());
     }
 
     @Override
@@ -57,26 +56,47 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
                 .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
                 .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
 
-        final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(this, "_ceil", mapping, generator.modelOutput());
-        final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(this, "_wall", mapping, generator.modelOutput());
-        final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(this, "_floor", mapping, generator.modelOutput());
+        final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
+                this,
+                "_ceil",
+                mapping,
+                generator.modelOutput()
+        );
+        final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(
+                this,
+                "_wall",
+                mapping,
+                generator.modelOutput()
+        );
+        final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(
+                this,
+                "_floor",
+                mapping,
+                generator.modelOutput()
+        );
 
         final var prop = PropertyDispatch.property(FACING);
         prop.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, modelCeil));
         prop.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, modelFloor));
-        prop.select(Direction.EAST, Variant
-                .variant()
-                .with(VariantProperties.MODEL, modelWall)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+        prop.select(
+                Direction.EAST, Variant
+                        .variant()
+                        .with(VariantProperties.MODEL, modelWall)
+                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+        );
         prop.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelWall));
-        prop.select(Direction.WEST, Variant
-                .variant()
-                .with(VariantProperties.MODEL, modelWall)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-        prop.select(Direction.NORTH, Variant
-                .variant()
-                .with(VariantProperties.MODEL, modelWall)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180));
+        prop.select(
+                Direction.WEST, Variant
+                        .variant()
+                        .with(VariantProperties.MODEL, modelWall)
+                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+        );
+        prop.select(
+                Direction.NORTH, Variant
+                        .variant()
+                        .with(VariantProperties.MODEL, modelWall)
+                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+        );
 
         generator.acceptBlockState(MultiVariantGenerator.multiVariant(this).with(prop));
         generator.delegateItemModel(this, modelCeil);

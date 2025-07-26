@@ -9,9 +9,9 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -47,7 +47,10 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
     @Environment(EnvType.CLIENT)
     public void provideBlockModels(WoverBlockModelGenerators generator) {
         final var modelLocation = BetterEnd.C.mk("block/hydralux_petal_block_colored");
-        final var mapping = new TextureMapping().put(TextureSlot.TEXTURE, BetterEnd.C.mk("block/hydralux_petal_block_colored"));
+        final var mapping = new TextureMapping().put(
+                TextureSlot.TEXTURE,
+                BetterEnd.C.mk("block/hydralux_petal_block_colored")
+        );
         if (PETAL_MODEL == null)
             PETAL_MODEL = EndModels.PETAL_COLORED.create(modelLocation, mapping, generator.modelOutput());
         generator.acceptBlockState(BlockModelGenerators.createSimpleBlock(this, PETAL_MODEL));

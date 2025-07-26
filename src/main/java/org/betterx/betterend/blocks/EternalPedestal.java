@@ -16,19 +16,19 @@ import org.betterx.betterend.rituals.EternalRitual;
 import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -279,7 +279,10 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
 
             variants.add(Variant
                     .variant()
-                    .with(VariantProperties.MODEL, template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())));
+                    .with(
+                            VariantProperties.MODEL,
+                            template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())
+                    ));
         }
         return variants;
     }
@@ -295,63 +298,95 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                 .put(TextureSlot.BOTTOM, baseTexture)
                 .put(EndModels.PILLAR, pillarTexture);
 
-        final ResourceLocation column = EndModels.PEDESTAL_COLUMN.create(id.withSuffix("_column"), mapping, generator.modelOutput());
-        final ResourceLocation top = EndModels.PEDESTAL_COLUMN_TOP.create(id.withSuffix("_column_top"), mapping, generator.modelOutput());
-        final ResourceLocation bottom = EndModels.PEDESTAL_BOTTOM.create(id.withSuffix("_bottom"), mapping, generator.modelOutput());
-        final ResourceLocation pillar = EndModels.PEDESTAL_PILLAR.create(id.withSuffix("_pillar"), mapping, generator.modelOutput());
+        final ResourceLocation column = EndModels.PEDESTAL_COLUMN.create(
+                id.withSuffix("_column"),
+                mapping,
+                generator.modelOutput()
+        );
+        final ResourceLocation top = EndModels.PEDESTAL_COLUMN_TOP.create(
+                id.withSuffix("_column_top"),
+                mapping,
+                generator.modelOutput()
+        );
+        final ResourceLocation bottom = EndModels.PEDESTAL_BOTTOM.create(
+                id.withSuffix("_bottom"),
+                mapping,
+                generator.modelOutput()
+        );
+        final ResourceLocation pillar = EndModels.PEDESTAL_PILLAR.create(
+                id.withSuffix("_pillar"),
+                mapping,
+                generator.modelOutput()
+        );
 
         final var properties = PropertyDispatch
                 .properties(STATE, ACTIVATED)
-                .select(EndBlockProperties.PedestalState.DEFAULT, false, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_default"),
-                        EndModels.PEDESTAL_DEFAULT,
-                        BetterEnd.C.mk("block/flavolite_runed"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.DEFAULT, true, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_default_active"),
-                        EndModels.PEDESTAL_DEFAULT,
-                        BetterEnd.C.mk("block/flavolite_runed_active"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.PEDESTAL_TOP, false, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_top"),
-                        EndModels.PEDESTAL_TOP,
-                        BetterEnd.C.mk("block/flavolite_runed"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.PEDESTAL_TOP, true, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_top_active"),
-                        EndModels.PEDESTAL_TOP,
-                        BetterEnd.C.mk("block/flavolite_runed_active"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.COLUMN, true,
+                .select(
+                        EndBlockProperties.PedestalState.DEFAULT, false, createVariants(
+                                generator, mapping,
+                                id.withSuffix("_default"),
+                                EndModels.PEDESTAL_DEFAULT,
+                                BetterEnd.C.mk("block/flavolite_runed"),
+                                7
+                        )
+                )
+                .select(
+                        EndBlockProperties.PedestalState.DEFAULT, true, createVariants(
+                                generator, mapping,
+                                id.withSuffix("_default_active"),
+                                EndModels.PEDESTAL_DEFAULT,
+                                BetterEnd.C.mk("block/flavolite_runed_active"),
+                                7
+                        )
+                )
+                .select(
+                        EndBlockProperties.PedestalState.PEDESTAL_TOP, false, createVariants(
+                                generator, mapping,
+                                id.withSuffix("_top"),
+                                EndModels.PEDESTAL_TOP,
+                                BetterEnd.C.mk("block/flavolite_runed"),
+                                7
+                        )
+                )
+                .select(
+                        EndBlockProperties.PedestalState.PEDESTAL_TOP, true, createVariants(
+                                generator, mapping,
+                                id.withSuffix("_top_active"),
+                                EndModels.PEDESTAL_TOP,
+                                BetterEnd.C.mk("block/flavolite_runed_active"),
+                                7
+                        )
+                )
+                .select(
+                        EndBlockProperties.PedestalState.COLUMN, true,
                         Variant.variant().with(VariantProperties.MODEL, column)
                 )
-                .select(EndBlockProperties.PedestalState.COLUMN, false,
+                .select(
+                        EndBlockProperties.PedestalState.COLUMN, false,
                         Variant.variant().with(VariantProperties.MODEL, column)
                 )
-                .select(EndBlockProperties.PedestalState.COLUMN_TOP, true,
+                .select(
+                        EndBlockProperties.PedestalState.COLUMN_TOP, true,
                         Variant.variant().with(VariantProperties.MODEL, top)
                 )
-                .select(EndBlockProperties.PedestalState.COLUMN_TOP, false,
+                .select(
+                        EndBlockProperties.PedestalState.COLUMN_TOP, false,
                         Variant.variant().with(VariantProperties.MODEL, top)
                 )
-                .select(EndBlockProperties.PedestalState.BOTTOM, true,
+                .select(
+                        EndBlockProperties.PedestalState.BOTTOM, true,
                         Variant.variant().with(VariantProperties.MODEL, bottom)
                 )
-                .select(EndBlockProperties.PedestalState.BOTTOM, false,
+                .select(
+                        EndBlockProperties.PedestalState.BOTTOM, false,
                         Variant.variant().with(VariantProperties.MODEL, bottom)
                 )
-                .select(EndBlockProperties.PedestalState.PILLAR, true,
+                .select(
+                        EndBlockProperties.PedestalState.PILLAR, true,
                         Variant.variant().with(VariantProperties.MODEL, pillar)
                 )
-                .select(EndBlockProperties.PedestalState.PILLAR, false,
+                .select(
+                        EndBlockProperties.PedestalState.PILLAR, false,
                         Variant.variant().with(VariantProperties.MODEL, pillar)
                 );
         ;
