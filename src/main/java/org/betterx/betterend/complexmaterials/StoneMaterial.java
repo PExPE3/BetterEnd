@@ -1,6 +1,9 @@
 package org.betterx.betterend.complexmaterials;
 
-import org.betterx.bclib.blocks.*;
+import org.betterx.bclib.blocks.BaseBlock;
+import org.betterx.bclib.blocks.BaseFurnaceBlock;
+import org.betterx.bclib.blocks.BasePressurePlateBlock;
+import org.betterx.bclib.blocks.BaseRotatedPillarBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndPedestal;
 import org.betterx.betterend.blocks.FlowerPotBlock;
@@ -200,7 +203,7 @@ public class StoneMaterial implements MaterialManager.Material {
     }
 
     @Override
-    public void registerRecipes(RecipeOutput context) {
+    public void registerRecipes(RecipeBuilder.Context context) {
         RecipeBuilder.crafting(BetterEnd.C.mk(name + "_bricks"), bricks)
                      .outputCount(4)
                      .shape("##", "##")

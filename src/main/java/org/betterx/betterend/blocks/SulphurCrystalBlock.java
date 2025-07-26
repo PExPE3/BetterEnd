@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -125,7 +125,10 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                 )
                 .withPool(
                         LootPool.lootPool()
-                                .when(AllOfCondition.allOf(InvertedLootItemCondition.invert(provider.hasSilkTouch()), ageCondition(3)))
+                                .when(AllOfCondition.allOf(
+                                        InvertedLootItemCondition.invert(provider.hasSilkTouch()),
+                                        ageCondition(3)
+                                ))
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(EndItems.CRYSTALLINE_SULPHUR)
                                              .apply(SetItemCountFunction
@@ -138,7 +141,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
 
     @Override
     public boolean canPlaceLiquid(
-            @Nullable Player player,
+            @Nullable LivingEntity livingEntity,
             BlockGetter blockGetter,
             BlockPos blockPos,
             BlockState blockState,

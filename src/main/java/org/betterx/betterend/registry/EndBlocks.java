@@ -7,8 +7,9 @@ import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.basis.*;
 import org.betterx.betterend.complexmaterials.*;
 import org.betterx.betterend.item.material.EndArmorTier;
-import org.betterx.betterend.item.material.EndToolMaterial;
+import org.betterx.betterend.item.material.EndToolTier;
 import org.betterx.wover.block.api.BlockRegistry;
+import org.betterx.wover.block.api.VanillaBlockDefinition;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import org.betterx.wover.tag.api.predefined.CommonPoiTags;
 
@@ -662,9 +663,8 @@ public class EndBlocks {
     public static final MetalMaterial THALLASIUM = MetalMaterial.makeNormal(
             "thallasium",
             MapColor.COLOR_BLUE,
-            EndToolMaterial.THALLASIUM,
+            EndToolTier.THALLASIUM,
             EndArmorTier.THALLASIUM,
-            EndToolMaterial.THALLASIUM.getLevel(),
             EndTags.ANVIL_IRON_TOOL,
             EndTemplates.THALLASIUM_UPGRADE
     );
@@ -674,9 +674,8 @@ public class EndBlocks {
             MapColor.WARPED_WART_BLOCK,
             7F,
             9F,
-            EndToolMaterial.TERMINITE,
+            EndToolTier.TERMINITE,
             EndArmorTier.TERMINITE,
-            EndToolMaterial.TERMINITE.getLevel(),
             EndTags.ANVIL_DIAMOND_TOOL,
             EndTemplates.TERMINITE_UPGRADE
     );
@@ -764,9 +763,18 @@ public class EndBlocks {
             MapColor.SAND
     ).init();
 
-    public static final Block END_STONE_SLAB = registerBlock("end_stone_slab", new BaseSlabBlock.Stone(Blocks.END_STONE));
-    public static final Block END_STONE_STAIR = registerBlock("end_stone_stairs", new BaseStairsBlock.Stone(Blocks.END_STONE));
-    public static final Block END_STONE_WALLS = registerBlock("end_stone_wall", new BaseWallBlock.Stone(Blocks.END_STONE));
+    public static final Block END_STONE_SLAB = registerBlock(
+            "end_stone_slab",
+            new BaseSlabBlock.Stone(Blocks.END_STONE)
+    );
+    public static final Block END_STONE_STAIR = registerBlock(
+            "end_stone_stairs",
+            new BaseStairsBlock.Stone(Blocks.END_STONE)
+    );
+    public static final Block END_STONE_WALLS = registerBlock(
+            "end_stone_wall",
+            new BaseWallBlock.Stone(Blocks.END_STONE)
+    );
 
 
     public static List<Block> getModBlocks() {
@@ -776,6 +784,11 @@ public class EndBlocks {
     @SafeVarargs
     public static <T extends Block> T registerBlock(String name, T block, TagKey<Block>... tags) {
         return getBlockRegistry().register(name, block, tags);
+    }
+
+    public static VanillaBlockDefinition defineEndBlock(String name) {
+        return getBlockRegistry()
+                .defineDefaultBlock(name);
     }
 
     public static Block registerEndBlockOnly(String name, Block block) {

@@ -1,7 +1,6 @@
 package org.betterx.betterend.item.material;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.item.api.armor.CustomArmorMaterial;
 
 import net.minecraft.core.Holder;
@@ -16,7 +15,7 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
             .toughness(0.0f)
             .knockbackResistance(0.0f)
-            .repairIngredient(EndBlocks.THALLASIUM.repairItems)
+            .createRepairIngredient()
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> TERMINITE = CustomArmorMaterial
@@ -26,7 +25,7 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
             .toughness(1.0f)
             .knockbackResistance(0.05f)
-            .repairIngredient(EndBlocks.TERMINITE.repairItems)
+            .createRepairIngredient()
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> AETERNIUM = CustomArmorMaterial
@@ -36,8 +35,7 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .toughness(3.5f)
             .knockbackResistance(0.2f)
-            .repairIngredient(EndBlocks.AETERNIUM.repairItems)
-
+            .createRepairIngredient()
             .buildAndRegister();
 
     public static final Holder<ArmorMaterial> CRYSTALITE = CustomArmorMaterial
@@ -47,6 +45,6 @@ public class EndArmorMaterial {
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .toughness(1.2f)
             .knockbackResistance(0.1f)
-            .repairIngredient(EndBlocks.TERMINITE.repairItems)
+            .createRepairIngredient()
             .buildAndRegister();
 }

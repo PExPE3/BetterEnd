@@ -23,10 +23,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -183,7 +180,11 @@ public class EndSlimeEntity extends Slime {
             minCount = 1;
         }
         if (causedByPlayer && this.lastHurtByPlayer != null) {
-            int looting = EnchantmentUtils.getItemEnchantmentLevel(this.lastHurtByPlayer.level(), Enchantments.LOOTING, this.lastHurtByPlayer);
+            int looting = EnchantmentUtils.getItemEnchantmentLevel(
+                    this.lastHurtByPlayer.level(),
+                    Enchantments.LOOTING,
+                    this.lastHurtByPlayer
+            );
             minCount += looting;
         }
         int count = minCount < maxCount ? MHelper.randRange(minCount, maxCount, random) : maxCount;
@@ -230,7 +231,7 @@ public class EndSlimeEntity extends Slime {
     public static boolean canSpawn(
             EntityType entityType,
             LevelAccessor world,
-            MobSpawnType spawnType,
+            EntitySpawnReason spawnType,
             BlockPos pos,
             RandomSource random
     ) {

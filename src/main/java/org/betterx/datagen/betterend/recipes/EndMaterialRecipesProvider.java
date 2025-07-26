@@ -1,11 +1,10 @@
 package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.betterend.complexmaterials.MaterialManager;
+import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
-
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.recipes.RecipeOutput;
+import org.betterx.wover.recipe.api.RecipeBuilder;
 
 public class EndMaterialRecipesProvider extends WoverRecipeProvider {
     public EndMaterialRecipesProvider(ModCore modCore) {
@@ -13,7 +12,8 @@ public class EndMaterialRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(RecipeBuilder.Context context) {
+        EndItems.AETERNIUM_SET.registerRecipes(context);
         MaterialManager.stream().forEach(m -> m.registerRecipes(context));
     }
 }

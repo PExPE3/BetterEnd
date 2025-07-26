@@ -1,46 +1,83 @@
 package org.betterx.betterend.item.material;
 
-import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.registry.EndTemplates;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.complex.api.equipment.EquipmentSet;
 import org.betterx.wover.complex.api.equipment.ToolSlot;
-import org.betterx.wover.item.api.trait.ItemTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 import org.jetbrains.annotations.NotNull;
 
-public class AeterniumSet extends EquipmentSet {
+public class AeterniumSet extends ToolsWithHeadsSet {
     public AeterniumSet() {
-        super(BetterEnd.C, "aeternium", EndToolTier.AETERNIUM, EndArmorTier.AETERNIUM, Items.STICK);
-
-        add(
-                ToolSlot.PICKAXE_SLOT,
-                ItemTraits.RECIPE_ITEM.with(
-                        (key, item, context) -> {
-                            RecipeBuilder.smithing(key.location(), item)
-                                         .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                                         .base(EndItems.AETERNIUM_PICKAXE_HEAD)
-                                         .addon(EndItems.LEATHER_WRAPPED_STICK)
-                                         .build(context);
-                        }
-                )
+        super(
+                "aeternium",
+                EndToolTier.AETERNIUM,
+                EndArmorTier.AETERNIUM,
+                EndItems.LEATHER_WRAPPED_STICK,
+                EndTemplates.LEATHER_HANDLE_ATTACHMENT,
+                EndTemplates.TOOL_ASSEMBLY,
+                false,
+                EndTags.ANVIL_NETHERITE_TOOL,
+                EndBlocks.TERMINITE.equipment
         );
-        add(ToolSlot.AXE_SLOT);
-        add(ToolSlot.SHOVEL_SLOT);
-        add(ToolSlot.HOE_SLOT);
-        add(ToolSlot.SWORD_SLOT);
-        add(ToolSlot.HAMMER_SLOT);
 
-        add(ArmorSlot.HELMET_SLOT);
-        add(ArmorSlot.CHESTPLATE_SLOT);
-        add(ArmorSlot.LEGGINGS_SLOT);
-        add(ArmorSlot.BOOTS_SLOT);
     }
+
+
+//    @Override
+//    protected void buildArmor() {
+//        add(
+//                ArmorSlot.HELMET_SLOT,
+//                ItemTraits.RECIPE_ITEM.with(
+//                        (key, item, context) -> {
+//                            RecipeBuilder.smithing(key.location(), item)
+//                                         .template(EndTemplates.PLATE_UPGRADE)
+//                                         .base(EndBlocks.TERMINITE.helmet)
+//                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
+//                                         .build(context);
+//                        }
+//                )
+//        );
+//        add(
+//                ArmorSlot.CHESTPLATE_SLOT,
+//                ItemTraits.RECIPE_ITEM.with(
+//                        (key, item, context) -> {
+//                            RecipeBuilder.smithing(key.location(), item)
+//                                         .template(EndTemplates.PLATE_UPGRADE)
+//                                         .base(EndBlocks.TERMINITE.chestplate)
+//                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
+//                                         .build(context);
+//                        }
+//                )
+//        );
+//        add(
+//                ArmorSlot.LEGGINGS_SLOT,
+//                ItemTraits.RECIPE_ITEM.with(
+//                        (key, item, context) -> {
+//                            RecipeBuilder.smithing(key.location(), item)
+//                                         .template(EndTemplates.PLATE_UPGRADE)
+//                                         .base(EndBlocks.TERMINITE.leggings)
+//                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
+//                                         .build(context);
+//                        }
+//                )
+//        );
+//        add(
+//                ArmorSlot.BOOTS_SLOT,
+//                ItemTraits.RECIPE_ITEM.with(
+//                        (key, item, context) -> {
+//                            RecipeBuilder.smithing(key.location(), item)
+//                                         .template(EndTemplates.PLATE_UPGRADE)
+//                                         .base(EndBlocks.TERMINITE.boots)
+//                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
+//                                         .build(context);
+//                        }
+//                )
+//        );
+//    }
 
     @Override
     public @NotNull Item.Properties commonToolProperties(Item.@NotNull Properties properties) {

@@ -2,24 +2,22 @@ package org.betterx.betterend.registry;
 
 import org.betterx.bclib.BCLib;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.items.BaseArmorItem;
 import org.betterx.bclib.items.BaseDiscItem;
-import org.betterx.bclib.items.BaseSpawnEggItem;
 import org.betterx.bclib.items.ModelProviderItem;
-import org.betterx.bclib.items.tool.BaseAxeItem;
-import org.betterx.bclib.items.tool.BaseHoeItem;
-import org.betterx.bclib.items.tool.BaseShovelItem;
-import org.betterx.bclib.items.tool.BaseSwordItem;
 import org.betterx.bclib.models.RecordItemModelProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.item.*;
-import org.betterx.betterend.item.material.EndArmorMaterial;
+import org.betterx.betterend.item.material.AeterniumSet;
 import org.betterx.betterend.item.material.EndArmorTier;
-import org.betterx.betterend.item.material.EndToolMaterial;
-import org.betterx.betterend.item.tool.EndHammerItem;
-import org.betterx.betterend.item.tool.EndPickaxe;
+import org.betterx.betterend.trait.item.EndArmorItemTraitBuilder;
+import org.betterx.betterend.trait.item.HammerTraitBuilder;
 import org.betterx.betterend.util.DebugHelpers;
+import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
+import org.betterx.wover.complex.api.equipment.ArmorSlot;
+import org.betterx.wover.complex.api.equipment.ToolTiers;
+import org.betterx.wover.item.api.DefaultItemDefinition;
 import org.betterx.wover.item.api.ItemRegistry;
+import org.betterx.wover.item.api.trait.ItemTraits;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.resources.ResourceKey;
@@ -32,6 +30,7 @@ import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxSong;
+import net.minecraft.world.item.Rarity;
 
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
@@ -43,14 +42,7 @@ public class EndItems {
     // Materials //
     public final static Item ENDER_DUST = registerEndItem("ender_dust");
     public final static Item ENDER_SHARD = registerEndItem("ender_shard");
-    public final static Item AETERNIUM_INGOT = registerEndItem(
-            "aeternium_ingot",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_FORGED_PLATE = registerEndItem(
-            "aeternium_forged_plate",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
+
     public final static Item END_LILY_LEAF = registerEndItem("end_lily_leaf");
     public final static Item END_LILY_LEAF_DRIED = registerEndItem("end_lily_leaf_dried");
     public final static Item CRYSTAL_SHARDS = registerEndItem("crystal_shards");
@@ -60,17 +52,27 @@ public class EndItems {
     public final static Item CRYSTALLINE_SULPHUR = registerEndItem("crystalline_sulphur");
     public final static Item HYDRALUX_PETAL = registerEndItem("hydralux_petal");
     public final static Item GELATINE = registerEndItem("gelatine");
-    public static final Item ETERNAL_CRYSTAL = registerEndItem("eternal_crystal", new EternalCrystalItem());
-    public final static Item ENCHANTED_PETAL = registerEndItem("enchanted_petal", new EnchantedItem(HYDRALUX_PETAL));
+    public static final Item ETERNAL_CRYSTAL = defineEndItem("eternal_crystal")
+            .stacksTo(16)
+            .rarity(Rarity.EPIC)
+            .buildAndRegister();
+
+    public final static Item ENCHANTED_PETAL = defineEndItem("enchanted_petal")
+            .stacksTo(16)
+            .rarity(Rarity.RARE)
+            .addTrait(ModelTraitLibrary.itemModel(() -> HYDRALUX_PETAL))
+            .buildAndRegister();
+
     public final static Item LEATHER_STRIPE = registerEndItem("leather_stripe");
     public final static Item LEATHER_WRAPPED_STICK = registerEndItem("leather_wrapped_stick");
     public final static Item SILK_FIBER = registerEndItem("silk_fiber");
     public final static Item LUMECORN_ROD = registerEndItem("lumecorn_rod");
     public final static Item SILK_MOTH_MATRIX = registerEndItem("silk_moth_matrix");
-    public final static Item ENCHANTED_MEMBRANE = registerEndItem(
-            "enchanted_membrane",
-            new EnchantedItem(Items.PHANTOM_MEMBRANE)
-    );
+    public final static Item ENCHANTED_MEMBRANE = defineEndItem("enchanted_membrane")
+            .stacksTo(16)
+            .rarity(Rarity.RARE)
+            .addTrait(ModelTraitLibrary.itemModel(() -> Items.PHANTOM_MEMBRANE))
+            .buildAndRegister();
 
     // Music Discs
     public final static Item MUSIC_DISC_STRANGE_AND_ALIEN = registerEndDisc(
@@ -90,198 +92,104 @@ public class EndItems {
             EndSounds.RECORD_EO_DRACONA
     );
 
+    // Equipment Sets //
+    public static final AeterniumSet AETERNIUM_SET = new AeterniumSet();
+
     // Armor //
-    public static final Item AETERNIUM_HELMET = registerEndItem(
-            "aeternium_helmet",
-            new BaseArmorItem(
-                    EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.HELMET,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final Item AETERNIUM_CHESTPLATE = registerEndItem(
-            "aeternium_chestplate",
-            new BaseArmorItem(
-                    EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.CHESTPLATE,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final Item AETERNIUM_LEGGINGS = registerEndItem(
-            "aeternium_leggings",
-            new BaseArmorItem(
-                    EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.LEGGINGS,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final Item AETERNIUM_BOOTS = registerEndItem(
-            "aeternium_boots",
-            new BaseArmorItem(
-                    EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.BOOTS,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final Item CRYSTALITE_HELMET = registerEndItem("crystalite_helmet", new CrystaliteHelmet());
-    public static final Item CRYSTALITE_CHESTPLATE = registerEndItem(
-            "crystalite_chestplate",
-            new CrystaliteChestplate()
-    );
-    public static final Item CRYSTALITE_LEGGINGS = registerEndItem("crystalite_leggings", new CrystaliteLeggings());
-    public static final Item CRYSTALITE_BOOTS = registerEndItem("crystalite_boots", new CrystaliteBoots());
-    public static final Item ARMORED_ELYTRA = registerEndItem(
-            "elytra_armored",
-            new ArmoredElytra(
+    public static final CrystaliteHelmet CRYSTALITE_HELMET = CrystaliteHelmet.definition(
+            ITEMS_REGISTRY, "crystalite_helmet"
+    ).buildAndRegister();
+    public static final CrystaliteChestplate CRYSTALITE_CHESTPLATE = CrystaliteChestplate.definition(
+            ITEMS_REGISTRY, "crystalite_chestplate"
+    ).buildAndRegister();
+    public static final Item CRYSTALITE_LEGGINGS = CrystaliteLeggings.definition(
+            ITEMS_REGISTRY, "crystalite_leggings"
+    ).buildAndRegister();
+    public static final Item CRYSTALITE_BOOTS = CrystaliteBoots.definition(
+            ITEMS_REGISTRY, "crystalite_boots"
+    ).buildAndRegister();
+
+    public static final Item ARMORED_ELYTRA = ITEMS_REGISTRY
+            .defineArmorItem(
                     "elytra_armored",
+                    (def) -> new ArmoredElytra(0.97, def)
+            )
+            .addTrait(ItemTraits.ELYTRA_ITEM)
+            .addTrait(EndArmorItemTraitBuilder.BUILDER.with(
+                    ArmorSlot.CHESTPLATE_SLOT,
                     EndArmorTier.AETERNIUM,
-                    Items.PHANTOM_MEMBRANE,
-                    900,
-                    0.97D,
-                    1.15f,
-                    1.15f,
+                    1.15f, 1.15f, 0.5f,
                     true
-            )
-    );
-    public static final Item CRYSTALITE_ELYTRA = registerEndItem("elytra_crystalite", new CrystaliteElytra(650, 1.0D));
+            ))
+            .durability(900)
+            .rarity(Rarity.EPIC)
+            .buildAndRegister();
 
-    // Tools //
-    public static final TieredItem AETERNIUM_SHOVEL = registerEndTool(
-            "aeternium_shovel", new BaseShovelItem(
-                    EndToolMaterial.AETERNIUM, 1.5F, -3.0F, makeEndItemSettings().fireResistant())
-    );
-    public static final TieredItem AETERNIUM_SWORD = registerEndTool(
-            "aeternium_sword",
-            new BaseSwordItem(
-                    EndToolMaterial.AETERNIUM,
-                    3,
-                    -2.4F,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final TieredItem AETERNIUM_PICKAXE = registerEndTool(
-            "aeternium_pickaxe",
-            new EndPickaxe(
-                    EndToolMaterial.AETERNIUM,
-                    1,
-                    -2.8F,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final TieredItem AETERNIUM_AXE = registerEndTool(
-            "aeternium_axe",
-            new BaseAxeItem(
-                    EndToolMaterial.AETERNIUM,
-                    5.0F,
-                    -3.0F,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final TieredItem AETERNIUM_HOE = registerEndTool(
-            "aeternium_hoe",
-            new BaseHoeItem(
-                    EndToolMaterial.AETERNIUM,
-                    -3,
-                    0.0F,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
-    public static final TieredItem AETERNIUM_HAMMER = registerEndTool(
-            "aeternium_hammer",
-            new EndHammerItem(
-                    EndToolMaterial.AETERNIUM,
-                    6.0F,
-                    -3.0F,
-                    0.3f,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
 
-    // Toolparts //
-    public final static Item AETERNIUM_SHOVEL_HEAD = registerEndItem(
-            "aeternium_shovel_head",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_PICKAXE_HEAD = registerEndItem(
-            "aeternium_pickaxe_head",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_AXE_HEAD = registerEndItem(
-            "aeternium_axe_head",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_HOE_HEAD = registerEndItem(
-            "aeternium_hoe_head",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_HAMMER_HEAD = registerEndItem(
-            "aeternium_hammer_head",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_SWORD_BLADE = registerEndItem(
-            "aeternium_sword_blade",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
-    public final static Item AETERNIUM_SWORD_HANDLE = registerEndItem(
-            "aeternium_sword_handle",
-            new ModelProviderItem(makeEndItemSettings().fireResistant())
-    );
+    public static final Item CRYSTALITE_ELYTRA = ITEMS_REGISTRY
+            .defineArmorItem(
+                    "elytra_crystalite",
+                    (def) -> new ArmoredElytra(1.0, def)
+            )
+            .addTrait(ItemTraits.ELYTRA_ITEM.with(ENCHANTED_MEMBRANE))
+            .addTrait(EndArmorItemTraitBuilder.BUILDER.with(
+                    ArmorSlot.CHESTPLATE_SLOT,
+                    EndArmorTier.CRYSTALITE,
+                    1.2f, 1.25f, 0.5f,
+                    false
+            ))
+            .durability(650)
+            .rarity(Rarity.EPIC)
+            .buildAndRegister();
+
 
     // ITEM_HAMMERS //
-    public static final Item IRON_HAMMER = registerEndTool(
-            "iron_hammer",
-            new EndHammerItem(
-                    Tiers.IRON,
-                    5.0F,
-                    -3.2F,
-                    0.2f,
-                    makeEndItemSettings()
-            )
-    );
-    public static final Item GOLDEN_HAMMER = registerEndTool(
-            "golden_hammer",
-            new EndHammerItem(
-                    Tiers.GOLD,
-                    4.5F,
-                    -3.4F,
-                    0.3f,
-                    makeEndItemSettings()
-            )
-    );
-    public static final Item DIAMOND_HAMMER = registerEndTool(
-            "diamond_hammer",
-            new EndHammerItem(
-                    Tiers.DIAMOND,
-                    5.5F,
-                    -3.1F,
-                    0.2f,
-                    makeEndItemSettings()
-            )
-    );
-    public static final TieredItem NETHERITE_HAMMER = registerEndTool(
-            "netherite_hammer",
-            new EndHammerItem(
-                    Tiers.NETHERITE,
-                    5.0F,
-                    -3.0F,
-                    0.2f,
-                    makeEndItemSettings().fireResistant()
-            )
-    );
+    public static final Item IRON_HAMMER = ITEMS_REGISTRY
+            .defineToolItem("iron_hammer")
+            .addTrait(HammerTraitBuilder.BUILDER.with(ToolTiers.IRON_TOOL, 0.2f))
+            .addTags(CommonItemTags.HAMMERS)
+            .buildAndRegister();
+
+    public static final Item GOLDEN_HAMMER = ITEMS_REGISTRY
+            .defineToolItem("golden_hammer")
+            .addTrait(HammerTraitBuilder.BUILDER.with(ToolTiers.GOLD_TOOL, 0.3f))
+            .addTags(CommonItemTags.HAMMERS)
+            .buildAndRegister();
+
+
+    public static final Item DIAMOND_HAMMER = ITEMS_REGISTRY
+            .defineToolItem("diamond_hammer")
+            .addTrait(HammerTraitBuilder.BUILDER.with(ToolTiers.DIAMOND_TOOL, 0.2f))
+            .addTags(CommonItemTags.HAMMERS)
+            .buildAndRegister();
+
+    public static final Item NETHERITE_HAMMER = ITEMS_REGISTRY
+            .defineToolItem("netherite_hammer")
+            .addTrait(HammerTraitBuilder.BUILDER.with(ToolTiers.NETHERITE_TOOL, 0.2f))
+            .addTags(CommonItemTags.HAMMERS)
+            .addTrait(ItemTraits.IS_FIREPROOF)
+            .buildAndRegister();
+
 
     // Food //
     public final static Item SHADOW_BERRY_RAW = registerEndFood("shadow_berry_raw", 4, 0.5F);
     public final static Item SHADOW_BERRY_COOKED = registerEndFood("shadow_berry_cooked", 6, 0.7F);
     public final static Item END_FISH_RAW = registerEndFood("end_fish_raw", Foods.SALMON);
     public final static Item END_FISH_COOKED = registerEndFood("end_fish_cooked", Foods.COOKED_SALMON);
-    public final static Item BUCKET_END_FISH = registerEndItem(
-            "bucket_end_fish",
-            new EndBucketItem(EndEntities.END_FISH.type())
-    );
-    public final static Item BUCKET_CUBOZOA = registerEndItem(
-            "bucket_cubozoa",
-            new EndBucketItem(EndEntities.CUBOZOA.type())
-    );
+    public final static Item BUCKET_END_FISH = ITEMS_REGISTRY
+            .defineToolItem(
+                    "bucket_end_fish",
+                    def -> new EndBucketItem(EndEntities.END_FISH.type(), def.getProperties())
+            ).stacksTo(1)
+            .buildAndRegister();
+
+    public final static Item BUCKET_CUBOZOA = ITEMS_REGISTRY
+            .defineToolItem(
+                    "bucket_cubozoa",
+                    def -> new EndBucketItem(EndEntities.CUBOZOA.type(), def.getProperties())
+            ).stacksTo(1)
+            .buildAndRegister();
+
     public final static Item SWEET_BERRY_JELLY = registerEndFood("sweet_berry_jelly", 8, 0.7F);
     public final static Item SHADOW_BERRY_JELLY = registerEndFood(
             "shadow_berry_jelly",
@@ -311,36 +219,43 @@ public class EndItems {
         return item;
     }
 
+    public static DefaultItemDefinition<Item> defineEndItem(String name) {
+        return getItemRegistry()
+                .defineDefaultItem(name, def -> new ModelProviderItem(def.getProperties()));
+    }
+
     public static Item registerEndItem(String name) {
-        return getItemRegistry().register(name, new ModelProviderItem(makeEndItemSettings()));
-    }
-
-    public static Item registerEndItem(String name, Item item) {
-        return getItemRegistry().register(name, item);
-    }
-
-    public static TieredItem registerEndTool(String name, TieredItem item) {
-        return getItemRegistry().registerAsTool(name, item);
+        return defineEndItem(name)
+                .buildAndRegister();
     }
 
     public static Item registerEndEgg(String name, EntityType<? extends Mob> type, int background, int dots) {
-        return getItemRegistry().registerEgg(name, new BaseSpawnEggItem(type, background, dots, makeEndItemSettings()));
+        return getItemRegistry().defineSpawnEgg(name).entityType(type).colors(background, dots).buildAndRegister();
     }
 
     public static Item registerEndFood(String name, int hunger, float saturation, MobEffectInstance... effects) {
-        return getItemRegistry().registerFood(name, ModelProviderItem::new, hunger, saturation, effects);
+        return getItemRegistry()
+                .defineFoodItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .nutrition(hunger)
+                .saturationModifier(saturation)
+                .setEffects(effects)
+                .buildAndRegister();
     }
 
     public static Item registerEndFood(String name, FoodProperties foodComponent) {
-        return getItemRegistry().register(
-                name, new ModelProviderItem(getItemRegistry()
-                        .createDefaultItemSettings()
-                        .food(foodComponent))
-        );
+        return getItemRegistry()
+                .defineFoodItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .food(foodComponent)
+                .buildAndRegister();
+
     }
 
     public static Item registerEndDrink(String name, int hunger, float saturation) {
-        return getItemRegistry().registerDrink(name, ModelProviderItem::new, hunger, saturation);
+        return getItemRegistry()
+                .defineDrinkItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .nutrition(hunger)
+                .saturationModifier(saturation)
+                .buildAndRegister();
     }
 
     public static Item.Properties makeEndItemSettings() {

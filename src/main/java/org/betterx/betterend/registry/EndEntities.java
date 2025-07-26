@@ -8,6 +8,8 @@ import org.betterx.ui.ColorUtil;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.EntityType.EntityFactory;
@@ -118,10 +120,11 @@ public class EndEntities {
             EntityFactory<T> entity
     ) {
         ResourceLocation id = BetterEnd.C.mk(name);
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
         EntityType<T> type = FabricEntityTypeBuilder
                 .create(group, entity)
                 .dimensions(EntityDimensions.fixed(width, height))
-                .build();
+                .build(key);
 
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);
     }
@@ -138,12 +141,13 @@ public class EndEntities {
             int dotsColor
     ) {
         ResourceLocation id = BetterEnd.C.mk(name);
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
         EntityType<T> type = FabricEntityTypeBuilder
                 .create(group, entity)
                 .dimensions(fixedSize
                         ? EntityDimensions.fixed(width, height)
                         : EntityDimensions.scalable(width, height))
-                .build();
+                .build(key);
         FabricDefaultAttributeRegistry.register(type, attributes);
         EndItems.registerEndEgg("spawn_egg_" + name, type, eggColor, dotsColor);
         Registry.register(BuiltInRegistries.ENTITY_TYPE, BetterEnd.C.mk(name), type);

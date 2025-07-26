@@ -2,30 +2,27 @@ package org.betterx.betterend.item;
 
 import org.betterx.betterend.effects.EndStatusEffects;
 import org.betterx.betterend.interfaces.MobEffectApplier;
-import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
+import org.betterx.wover.item.api.ItemDefinition;
+import org.betterx.wover.item.api.ItemRegistry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
-import java.util.List;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 public class CrystaliteBoots extends CrystaliteArmor implements MobEffectApplier {
-    private static Properties defaultSettings() {
-        return EndArmorItem.createDefaultEndArmorSettings(
-                ArmorSlot.BOOTS_SLOT, EndArmorTier.CRYSTALITE,
-                EndArmorItem.startAttributeBuilder(
-                        ArmorSlot.BOOTS_SLOT,
-                        EndArmorTier.CRYSTALITE
-                ).build()
-        );
+    public static ItemDefinition<CrystaliteBoots, ?> definition(ItemRegistry registry, String name) {
+        return CrystaliteArmor.crystaliteArmorDefinition(registry, name, ArmorSlot.BOOTS_SLOT, CrystaliteBoots::new);
     }
 
-    public CrystaliteBoots() {
-        super(Type.BOOTS, defaultSettings());
+    public CrystaliteBoots(ItemDefinition<?, ?> definition) {
+        super(definition);
     }
 
     @Override
@@ -37,13 +34,15 @@ public class CrystaliteBoots extends CrystaliteArmor implements MobEffectApplier
 
     @Override
     public void appendHoverText(
-            ItemStack itemStack,
-            TooltipContext tooltipContext,
-            List<Component> lines,
-            TooltipFlag tooltipFlag
+            @NotNull ItemStack itemStack,
+            @NotNull TooltipContext tooltipContext,
+            @NotNull TooltipDisplay tooltipDisplay,
+            @NotNull Consumer<Component> consumer,
+            @NotNull TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(itemStack, tooltipContext, lines, tooltipFlag);
-        lines.add(1, Component.empty());
-        lines.add(2, BOOTS_DESC);
+        super.appendHoverText(itemStack, tooltipContext, tooltipDisplay, consumer, tooltipFlag);
+
+        consumer.accept(Component.empty());
+        consumer.accept(BOOTS_DESC);
     }
 }

@@ -35,7 +35,8 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
             ArmorSlot slot,
             ArmorTier tier
     ) {
-        return startAttributeBuilder(slot, tier,
+        return startAttributeBuilder(
+                slot, tier,
                 EndArmorTier.CRYSTALITE.armorMaterial
                         .value()
                         .getDefense(slot.armorType),
@@ -49,7 +50,7 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
     public static ItemAttributeModifiers.Builder startAttributeBuilder(
             ArmorSlot slot,
             ArmorTier tier,
-            int defense,
+            int defenseDivider,
             float toughness,
             float knockbackResistance
     ) {
@@ -59,7 +60,7 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
                         Attributes.ARMOR,
                         new AttributeModifier(
                                 ARMOR_BOOST,
-                                EndArmorTier.CRYSTALITE.armorMaterial
+                                tier.armorMaterial
                                         .value()
                                         .getDefense(Type.CHESTPLATE) / 1.25f,
                                 AttributeModifier.Operation.ADD_VALUE

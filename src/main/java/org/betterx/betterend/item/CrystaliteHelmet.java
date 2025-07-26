@@ -1,32 +1,30 @@
 package org.betterx.betterend.item;
 
-import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.registry.EndAttributes;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
+import org.betterx.wover.item.api.ItemDefinition;
+import org.betterx.wover.item.api.ItemRegistry;
 
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public class CrystaliteHelmet extends CrystaliteArmor {
-    private static Properties defaultSettings() {
-        return EndArmorItem.createDefaultEndArmorSettings(
-                ArmorSlot.HELMET_SLOT, EndArmorTier.CRYSTALITE,
-                EndArmorItem.startAttributeBuilder(
-                        ArmorSlot.HELMET_SLOT,
-                        EndArmorTier.CRYSTALITE
-                ).add(
-                        EndAttributes.BLINDNESS_RESISTANCE,
-                        new AttributeModifier(
-                                EndArmorItem.BASE_BLINDNESS_RESISTANCE,
-                                1.0,
-                                AttributeModifier.Operation.ADD_VALUE
-                        ),
-                        EquipmentSlotGroup.HEAD
-                ).build()
+    public static ItemDefinition<CrystaliteHelmet, ?> definition(ItemRegistry registry, String name) {
+        return CrystaliteArmor.crystaliteArmorDefinition(
+                registry, name, ArmorSlot.CHESTPLATE_SLOT,
+                CrystaliteHelmet::new
+        ).addAttribute(
+                EndAttributes.BLINDNESS_RESISTANCE,
+                new AttributeModifier(
+                        EndArmorItem.BASE_BLINDNESS_RESISTANCE,
+                        1.0,
+                        AttributeModifier.Operation.ADD_VALUE
+                ),
+                EquipmentSlotGroup.HEAD
         );
     }
 
-    public CrystaliteHelmet() {
-        super(Type.HELMET, defaultSettings());
+    public CrystaliteHelmet(ItemDefinition<?, ?> definition) {
+        super(definition);
     }
 }

@@ -9,7 +9,6 @@ import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.level.ItemLike;
@@ -93,7 +92,7 @@ public class ColoredMaterial implements MaterialManager.Material {
     }
 
     @Override
-    public void registerRecipes(RecipeOutput context) {
+    public void registerRecipes(RecipeBuilder.Context context) {
         if (RECIPES != null) {
             RECIPES.forEach(r -> r.registerRecipes(context));
         }

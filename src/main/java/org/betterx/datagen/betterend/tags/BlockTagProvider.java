@@ -1,6 +1,7 @@
 package org.betterx.datagen.betterend.tags;
 
 import org.betterx.betterend.complexmaterials.MaterialManager;
+import static org.betterx.betterend.complexmaterials.MetalMaterial.ORE;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.world.biome.EndBiome;
@@ -27,7 +28,7 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
 
     @Override
     public void prepareTags(TagBootstrapContext<Block> context) {
-        addEndGround(context, EndBlocks.THALLASIUM.ore);
+        addEndGround(context, EndBlocks.THALLASIUM.getBlock(ORE));
         addEndGround(context, EndBlocks.ENDSTONE_DUST);
         addEndGround(context, EndBlocks.AMBER_ORE);
         addEndGround(context, EndBlocks.CAVE_MOSS);

@@ -3,10 +3,10 @@ package org.betterx.datagen.betterend.tags;
 import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.complexmaterials.MaterialManager;
-import org.betterx.betterend.item.tool.EndHammerItem;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTags;
+import org.betterx.wover.complex.api.equipment.ToolSlot;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.WoverTagProvider;
 import org.betterx.wover.tag.api.TagManager;
@@ -35,15 +35,11 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
                 float compost = food.nutrition() * food.saturation() * 0.18F;
                 ComposterAPI.allowCompost(compost, item);
             }
-
-            if (item instanceof EndHammerItem) {
-                context.add(CommonItemTags.HAMMERS, item);
-            }
         });
 
-        context.add(ItemTags.BEACON_PAYMENT_ITEMS, EndItems.AETERNIUM_INGOT);
+        context.add(ItemTags.BEACON_PAYMENT_ITEMS, EndItems.AETERNIUM_SET.ingot);
 
-        context.add(CommonItemTags.IRON_INGOTS, EndBlocks.THALLASIUM.ingot);
+        context.add(CommonItemTags.IRON_INGOTS, EndBlocks.THALLASIUM.equipment.ingot);
 
         context.add(EndTags.ALLOYING_IRON, Items.IRON_ORE, Items.DEEPSLATE_IRON_ORE, Items.RAW_IRON);
         context.add(EndTags.ALLOYING_GOLD, Items.GOLD_ORE, Items.DEEPSLATE_GOLD_ORE, Items.RAW_GOLD);
@@ -56,16 +52,25 @@ THALLASIUM = IRON
 TERMINITE = DIAMOND
 AETERNIUM > NETHERITE
  */
-        context.add(EndTags.ANVIL_AETERNIUM_TOOL, EndItems.AETERNIUM_HAMMER);
+        context.add(EndTags.ANVIL_AETERNIUM_TOOL, EndItems.AETERNIUM_SET.get(ToolSlot.HAMMER_SLOT));
 
         context.add(EndTags.ANVIL_NETHERITE_TOOL, EndTags.ANVIL_AETERNIUM_TOOL);
         context.add(EndTags.ANVIL_NETHERITE_TOOL, EndItems.NETHERITE_HAMMER);
 
         context.add(EndTags.ANVIL_DIAMOND_TOOL, EndTags.ANVIL_NETHERITE_TOOL);
-        context.add(EndTags.ANVIL_DIAMOND_TOOL, EndItems.DIAMOND_HAMMER, EndBlocks.TERMINITE.hammer);
+        context.add(
+                EndTags.ANVIL_DIAMOND_TOOL,
+                EndItems.DIAMOND_HAMMER,
+                EndBlocks.TERMINITE.equipment.get(ToolSlot.HAMMER_SLOT)
+        );
 
         context.add(EndTags.ANVIL_IRON_TOOL, EndTags.ANVIL_DIAMOND_TOOL);
-        context.add(EndTags.ANVIL_IRON_TOOL, EndItems.IRON_HAMMER, EndItems.GOLDEN_HAMMER, EndBlocks.THALLASIUM.hammer);
+        context.add(
+                EndTags.ANVIL_IRON_TOOL,
+                EndItems.IRON_HAMMER,
+                EndItems.GOLDEN_HAMMER,
+                EndBlocks.THALLASIUM.equipment.get(ToolSlot.HAMMER_SLOT)
+        );
 
         MaterialManager.stream().forEach(m -> m.registerItemTags(context));
 

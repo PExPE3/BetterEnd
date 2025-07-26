@@ -1,16 +1,15 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.client.models.EndModels;
-import org.betterx.wover.block.api.model.BlockModelProvider;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.block.api.trait.BlockTraitLookup;
+import org.betterx.wover.sets.api.blocks.BlockSet;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,11 +21,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 
-public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLayerProvider, BlockModelProvider {
+public class ChandelierBlock extends BaseAttachedBlock.Metal {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
     public ChandelierBlock(Block source) {
@@ -37,9 +39,8 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
                                        .requiresCorrectToolForDrops());
     }
 
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
+    public ChandelierBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -48,58 +49,73 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
         return BOUNDING_SHAPES.get(state.getValue(FACING));
     }
 
-    @Override
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
-        final var baseTexture = TextureMapping.getBlockTexture(this);
-        final var mapping = new TextureMapping()
-                .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
-                .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
-                .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
+    @Environment(EnvType.CLIENT)
+    public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
+        return ClientBlockTraits.MODEL.with(
+                (key, block, generator) -> {
+                    final var baseTexture = TextureMapping.getBlockTexture(block);
+                    final var mapping = new TextureMapping()
+                            .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
+                            .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
+                            .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
 
-        final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
-                this,
-                "_ceil",
-                mapping,
-                generator.modelOutput()
-        );
-        final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(
-                this,
-                "_wall",
-                mapping,
-                generator.modelOutput()
-        );
-        final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(
-                this,
-                "_floor",
-                mapping,
-                generator.modelOutput()
-        );
+                    final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
+                            block,
+                            "_ceil",
+                            mapping,
+                            generator.vanillaGenerator.modelOutput
+                    );
+                    final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(
+                            block,
+                            "_wall",
+                            mapping,
+                            generator.vanillaGenerator.modelOutput
+                    );
+                    final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(
+                            block,
+                            "_floor",
+                            mapping,
+                            generator.vanillaGenerator.modelOutput
+                    );
 
-        final var prop = PropertyDispatch.property(FACING);
-        prop.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, modelCeil));
-        prop.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, modelFloor));
-        prop.select(
-                Direction.EAST, Variant
-                        .variant()
-                        .with(VariantProperties.MODEL, modelWall)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-        );
-        prop.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelWall));
-        prop.select(
-                Direction.WEST, Variant
-                        .variant()
-                        .with(VariantProperties.MODEL, modelWall)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
-        prop.select(
-                Direction.NORTH, Variant
-                        .variant()
-                        .with(VariantProperties.MODEL, modelWall)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-        );
+                    final var facingDispatch = PropertyDispatch
+                            .modify(BaseAttachedBlock.FACING)
+                            .select(
+                                    Direction.DOWN,
+                                    (variant) -> BlockModelGenerators.plainModel(modelCeil)
+                            )
+                            .select(
+                                    Direction.UP,
+                                    (variant) -> BlockModelGenerators.plainModel(modelFloor)
+                            )
+                            .select(
+                                    Direction.EAST,
+                                    (variant) -> BlockModelGenerators.Y_ROT_270.apply(
+                                            BlockModelGenerators.plainModel(modelWall))
+                            )
+                            .select(
+                                    Direction.SOUTH,
+                                    (variant) -> BlockModelGenerators.plainModel(modelWall)
+                            )
+                            .select(
+                                    Direction.WEST,
+                                    (variant) -> BlockModelGenerators.Y_ROT_90.apply(
+                                            BlockModelGenerators.plainModel(modelWall))
+                            )
+                            .select(
+                                    Direction.NORTH,
+                                    (variant) -> BlockModelGenerators.Y_ROT_180.apply(
+                                            BlockModelGenerators.plainModel(modelWall))
+                            );
 
-        generator.acceptBlockState(MultiVariantGenerator.multiVariant(this).with(prop));
-        generator.delegateItemModel(this, modelCeil);
+
+                    generator.acceptBlockState(
+                            MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(modelCeil))
+                                                 .with(facingDispatch)
+                    );
+
+                    generator.delegateItemModel(block, modelCeil);
+                });
     }
 
     static {

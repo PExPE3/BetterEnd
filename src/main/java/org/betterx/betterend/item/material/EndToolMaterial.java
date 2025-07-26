@@ -1,6 +1,5 @@
 package org.betterx.betterend.item.material;
 
-import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndTags;
 
 import net.minecraft.tags.BlockTags;
@@ -13,7 +12,7 @@ public class EndToolMaterial {
             7.0F,
             1.5F,
             9,
-            EndBlocks.THALLASIUM.repairItems
+            EndArmorMaterial.THALLASIUM.value().repairIngredient()
     );
 
     public static final ToolMaterial TERMINITE = new ToolMaterial(
@@ -22,7 +21,7 @@ public class EndToolMaterial {
             8.5F,
             3.5F,
             9,
-            EndBlocks.TERMINITE.repairItems
+            EndArmorMaterial.TERMINITE.value().repairIngredient()
     );
 
     public static final ToolMaterial AETERNIUM = new ToolMaterial(
@@ -31,6 +30,6 @@ public class EndToolMaterial {
             10.0F,
             4.5F,
             10,
-            EndBlocks.AETERNIUM.repairItems
+            EndArmorMaterial.AETERNIUM.value().repairIngredient()
     );
 }

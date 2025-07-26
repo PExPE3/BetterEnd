@@ -1,5 +1,6 @@
 package org.betterx.datagen.betterend.worldgen.features;
 
+import static org.betterx.betterend.complexmaterials.MetalMaterial.ORE;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndFeatures;
@@ -29,7 +30,7 @@ public class OreFeatureProvider extends WoverFeatureProvider {
 
     @Override
     protected void bootstrapPlaced(BootstrapContext<PlacedFeature> context) {
-        registerOre(context, EndOreFeatures.THALLASIUM_ORE, EndBlocks.THALLASIUM.ore, 24, 8);
+        registerOre(context, EndOreFeatures.THALLASIUM_ORE, EndBlocks.THALLASIUM.getBlock(ORE), 24, 8);
         registerOre(context, EndOreFeatures.ENDER_ORE, EndBlocks.ENDER_ORE, 12, 4);
         registerOre(context, EndOreFeatures.AMBER_ORE, EndBlocks.AMBER_ORE, 60, 6);
         registerOre(context, EndOreFeatures.DRAGON_BONE_BLOCK_ORE, EndBlocks.DRAGON_BONE_BLOCK, 24, 8);

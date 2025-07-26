@@ -14,7 +14,6 @@ import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
@@ -72,14 +71,20 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
     }
 
     @Override
-    public void registerRecipes(RecipeOutput context) {
-        CraftingRecipeBuilder craftingRecipeBuilder18 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_bricks"), bricks);
+    public void registerRecipes(RecipeBuilder.Context context) {
+        CraftingRecipeBuilder craftingRecipeBuilder18 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_bricks"),
+                bricks
+        );
         CraftingRecipeBuilder craftingRecipeBuilder28 = craftingRecipeBuilder18.outputCount(4);
         CraftingRecipeBuilder craftingRecipeBuilder9 = craftingRecipeBuilder28.shape("##", "##")
                                                                               .addMaterial('#', source);
         craftingRecipeBuilder9.group("end_bricks")
                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder17 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_polished"), polished);
+        CraftingRecipeBuilder craftingRecipeBuilder17 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_polished"),
+                polished
+        );
         CraftingRecipeBuilder craftingRecipeBuilder27 = craftingRecipeBuilder17.outputCount(4);
         CraftingRecipeBuilder craftingRecipeBuilder8 = craftingRecipeBuilder27.shape("##", "##")
                                                                               .addMaterial('#', bricks);
@@ -91,13 +96,19 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                                                                               .addMaterial('#', polished);
         craftingRecipeBuilder7.group("end_small_tile")
                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder25 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_pillar"), pillar);
+        CraftingRecipeBuilder craftingRecipeBuilder25 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_pillar"),
+                pillar
+        );
         CraftingRecipeBuilder craftingRecipeBuilder6 = craftingRecipeBuilder25.shape("#", "#")
                                                                               .addMaterial('#', slab);
         craftingRecipeBuilder6.group("end_pillar")
                               .build(context);
 
-        CraftingRecipeBuilder craftingRecipeBuilder15 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_stairs"), stairs);
+        CraftingRecipeBuilder craftingRecipeBuilder15 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_stairs"),
+                stairs
+        );
         CraftingRecipeBuilder craftingRecipeBuilder24 = craftingRecipeBuilder15.outputCount(4);
         CraftingRecipeBuilder craftingRecipeBuilder5 = craftingRecipeBuilder24.shape("#  ", "## ", "###")
                                                                               .addMaterial('#', source);
@@ -109,13 +120,19 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                                                                               .addMaterial('#', source);
         craftingRecipeBuilder4.group("end_stone_slabs")
                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder13 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_bricks_stairs"), brick_stairs);
+        CraftingRecipeBuilder craftingRecipeBuilder13 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_bricks_stairs"),
+                brick_stairs
+        );
         CraftingRecipeBuilder craftingRecipeBuilder22 = craftingRecipeBuilder13.outputCount(4);
         CraftingRecipeBuilder craftingRecipeBuilder3 = craftingRecipeBuilder22.shape("#  ", "## ", "###")
                                                                               .addMaterial('#', bricks);
         craftingRecipeBuilder3.group("end_stone_stairs")
                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder12 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_bricks_slab"), brick_slab);
+        CraftingRecipeBuilder craftingRecipeBuilder12 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_bricks_slab"),
+                brick_slab
+        );
         CraftingRecipeBuilder craftingRecipeBuilder21 = craftingRecipeBuilder12.outputCount(6);
         CraftingRecipeBuilder craftingRecipeBuilder2 = craftingRecipeBuilder21.shape("###")
                                                                               .addMaterial('#', bricks);
@@ -128,7 +145,10 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                                                                               .addMaterial('#', source);
         craftingRecipeBuilder1.group("end_wall")
                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder10 = RecipeBuilder.crafting(BetterEnd.C.mk(name + "_bricks_wall"), brick_wall);
+        CraftingRecipeBuilder craftingRecipeBuilder10 = RecipeBuilder.crafting(
+                BetterEnd.C.mk(name + "_bricks_wall"),
+                brick_wall
+        );
         CraftingRecipeBuilder craftingRecipeBuilder19 = craftingRecipeBuilder10.outputCount(6);
         CraftingRecipeBuilder craftingRecipeBuilder = craftingRecipeBuilder19.shape("###", "###")
                                                                              .addMaterial('#', bricks);

@@ -13,7 +13,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -67,7 +66,7 @@ public class HydrothermalVentBlock extends BaseBlockNotFull.Stone implements Ent
 
     @Override
     public boolean canPlaceLiquid(
-            @Nullable Player player,
+            @Nullable LivingEntity livingEntity,
             BlockGetter blockGetter,
             BlockPos blockPos,
             BlockState blockState,

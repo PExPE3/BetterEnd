@@ -8,8 +8,6 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
@@ -19,60 +17,7 @@ public class SmithingRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_pickaxe"), EndItems.AETERNIUM_PICKAXE)
-                     .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                     .base(EndItems.AETERNIUM_PICKAXE_HEAD)
-                     .addon(EndItems.LEATHER_WRAPPED_STICK)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_axe"), EndItems.AETERNIUM_AXE)
-                     .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                     .base(EndItems.AETERNIUM_AXE_HEAD)
-                     .addon(EndItems.LEATHER_WRAPPED_STICK)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_shovel"), EndItems.AETERNIUM_SHOVEL)
-                     .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                     .base(EndItems.AETERNIUM_SHOVEL_HEAD)
-                     .addon(EndItems.LEATHER_WRAPPED_STICK)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_hoe"), EndItems.AETERNIUM_HOE)
-                     .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                     .base(EndItems.AETERNIUM_HOE_HEAD)
-                     .addon(EndItems.LEATHER_WRAPPED_STICK)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_hammer"), EndItems.AETERNIUM_HAMMER)
-                     .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
-                     .base(EndItems.AETERNIUM_HAMMER_HEAD)
-                     .addon(EndItems.LEATHER_WRAPPED_STICK)
-                     .build(context);
-
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_sword"), EndItems.AETERNIUM_SWORD)
-                     .template(EndTemplates.TOOL_ASSEMBLY)
-                     .base(EndItems.AETERNIUM_SWORD_BLADE)
-                     .addon(EndItems.AETERNIUM_SWORD_HANDLE)
-                     .build(context);
-
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_helmet"), EndItems.AETERNIUM_HELMET)
-                     .template(EndTemplates.PLATE_UPGRADE)
-                     .base(EndBlocks.TERMINITE.helmet)
-                     .addon(EndItems.AETERNIUM_FORGED_PLATE)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_chestplate"), EndItems.AETERNIUM_CHESTPLATE)
-                     .template(EndTemplates.PLATE_UPGRADE)
-                     .base(EndBlocks.TERMINITE.chestplate)
-                     .addon(EndItems.AETERNIUM_FORGED_PLATE)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_leggings"), EndItems.AETERNIUM_LEGGINGS)
-                     .template(EndTemplates.PLATE_UPGRADE)
-                     .base(EndBlocks.TERMINITE.leggings)
-                     .addon(EndItems.AETERNIUM_FORGED_PLATE)
-                     .build(context);
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_boots"), EndItems.AETERNIUM_BOOTS)
-                     .template(EndTemplates.PLATE_UPGRADE)
-                     .base(EndBlocks.TERMINITE.boots)
-                     .addon(EndItems.AETERNIUM_FORGED_PLATE)
-                     .build(context);
-
+    protected void bootstrap(RecipeBuilder.Context context) {
         RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_sword_handle"), EndItems.AETERNIUM_SWORD_HANDLE)
                      .template(EndTemplates.TERMINITE_UPGRADE)
                      .base(EndItems.LEATHER_WRAPPED_STICK)
