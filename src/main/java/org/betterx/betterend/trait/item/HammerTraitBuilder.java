@@ -5,6 +5,7 @@ import org.betterx.wover.complex.api.equipment.ToolSlot;
 import org.betterx.wover.complex.api.equipment.ToolTier;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.item.api.ItemDefinition;
+import org.betterx.wover.item.api.ToolItemDefinition;
 import org.betterx.wover.item.api.trait.AbstractItemTraitBuilder;
 import org.betterx.wover.item.api.trait.ItemTrait;
 import org.betterx.wover.item.api.trait.ItemTraitKey;
@@ -63,10 +64,14 @@ public class HammerTraitBuilder extends AbstractItemTraitBuilder.Generic {
             }
             final var values = tier.getValues(ToolSlot.HAMMER_SLOT);
             if (values != null) {
-                definition.getProperties().tool(
-                        tier.toolMaterial, MineableTags.HAMMER,
-                        values.attackDamage(), values.attackSpeed(), values.disableBlockingForSeconds()
-                );
+                if (definition instanceof ToolItemDefinition toolDef) {
+                    toolDef.tool(
+                            tier.toolMaterial, MineableTags.HAMMER,
+                            values.attackDamage(), values.attackSpeed(), values.disableBlockingForSeconds()
+                    );
+                } else {
+                    throw new IllegalArgumentException("Definition must be a ToolItemDefinition");
+                }
             }
 
             if (knockback != 0) {

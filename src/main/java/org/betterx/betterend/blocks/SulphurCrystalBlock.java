@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.interfaces.survives.SurvivesOnBrimstone;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.loot.api.BlockLootProvider;
@@ -21,7 +19,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -54,17 +51,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements RenderLayerProvider, SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone, BlockLootProvider {
+public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone, BlockLootProvider {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 2);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public SulphurCrystalBlock() {
-        super(Properties.of()
-                        .mapColor(MapColor.COLOR_YELLOW)
-                        .sound(SoundType.GLASS)
-                        .requiresCorrectToolForDrops()
-                        .noCollission());
+    public SulphurCrystalBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
 
@@ -72,11 +65,6 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
         super.createBlockStateDefinition(stateManager);
         stateManager.add(AGE, WATERLOGGED);
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     private LootItemConditionalFunction.@NotNull Builder<?> applyAgeBonus(@NotNull LootLookupProvider provider, int i) {

@@ -10,11 +10,11 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class EndTerrainBlock extends BaseTerrainBlock implements PottableTerrain, BlockTagProvider, BehaviourStone {
-    public EndTerrainBlock(MapColor color) {
-        super(Blocks.END_STONE, color);
+    public EndTerrainBlock(BlockBehaviour.Properties properties) {
+        super(properties, Blocks.END_STONE);
     }
 
     @Override

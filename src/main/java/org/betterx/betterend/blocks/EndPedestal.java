@@ -1,29 +1,29 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourMetal;
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
-import org.betterx.bclib.behaviours.interfaces.BehaviourWood;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.block.api.trait.BlockTraitLookup;
+import org.betterx.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public abstract class EndPedestal extends PedestalBlock {
-
-    protected EndPedestal(Block parent) {
-        super(parent);
+public class EndPedestal extends PedestalBlock {
+    public EndPedestal(BlockBehaviour.Properties props) {
+        super(props);
     }
 
 
-    @Override
     @Environment(EnvType.CLIENT)
-    protected TextureMapping createTextureMapping() {
+    protected static TextureMapping createTextureMapping(Block parent) {
         final var parentTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent));
         final var polishedTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent, "_polished"));
         return new TextureMapping()
@@ -33,24 +33,13 @@ public abstract class EndPedestal extends PedestalBlock {
                 .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar_side"));
     }
 
-    public static class Stone extends EndPedestal implements BehaviourStone {
-        public Stone(Block parent) {
-            super(parent);
-        }
 
-    }
-
-    public static class Wood extends EndPedestal implements BehaviourWood {
-        public Wood(Block parent) {
-            super(parent);
-        }
-
-    }
-
-    public static class Metal extends EndPedestal implements BehaviourMetal {
-        public Metal(Block parent) {
-            super(parent);
-        }
-
+    @Environment(EnvType.CLIENT)
+    public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
+        return ClientBlockTraits.MODEL.with(
+                (key, block, generator) -> {
+                    provideBlockModel(generator, createTextureMapping(set.getBaseBlock()), block);
+                }
+        );
     }
 }

@@ -14,14 +14,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,11 +29,8 @@ public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider,
 
     public static final MapCodec<EndstoneDustBlock> CODEC = MapCodec.unit(EndstoneDustBlock::new);
 
-    public EndstoneDustBlock() {
-        super(FabricBlockSettings
-                .copyOf(Blocks.SAND)
-                .mapColor(Blocks.END_STONE.defaultMapColor())
-        );
+    public EndstoneDustBlock(BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
     @Override

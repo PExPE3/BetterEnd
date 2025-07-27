@@ -1,9 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.block.api.BlockProperties;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -16,20 +15,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import org.jetbrains.annotations.Nullable;
 
-public class BrimstoneBlock extends BaseBlock.Stone {
+public class BrimstoneBlock extends Block {
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
 
-    public BrimstoneBlock() {
+    public BrimstoneBlock(BlockBehaviour.Properties props) {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE).mapColor(MapColor.COLOR_BROWN).randomTicks());
         registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false));
     }

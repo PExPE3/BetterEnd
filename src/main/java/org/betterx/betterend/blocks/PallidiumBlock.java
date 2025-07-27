@@ -12,15 +12,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class PallidiumBlock extends EndTerrainBlock {
     private final Block nextLevel;
 
-    public PallidiumBlock(String thickness, Block nextLevel) {
-        super(MapColor.COLOR_LIGHT_GRAY);
+    public PallidiumBlock(BlockBehaviour.Properties props, String thickness, Block nextLevel) {
+        super(props);
         this.nextLevel = nextLevel;
     }
 

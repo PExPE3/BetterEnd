@@ -10,17 +10,19 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class PedestalVanilla extends PedestalBlock implements BehaviourStone {
+    protected final Block parent;
 
-    public PedestalVanilla(Block parent) {
-        super(parent);
+    public PedestalVanilla(BlockBehaviour.Properties props, Block parent) {
+        super(props);
+        this.parent = parent;
     }
 
-    @Override
     @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
         final var parentTexture = BuiltInRegistries.BLOCK.getKey(parent);

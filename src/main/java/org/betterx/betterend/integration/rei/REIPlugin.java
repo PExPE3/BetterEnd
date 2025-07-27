@@ -1,39 +1,39 @@
 package org.betterx.betterend.integration.rei;
 
-import org.betterx.bclib.blocks.BaseFurnaceBlock;
-import org.betterx.bclib.recipes.AlloyingRecipe;
-import org.betterx.bclib.recipes.AnvilRecipe;
-import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.blocks.basis.EndAnvilBlock;
-import org.betterx.betterend.recipe.builders.InfusionRecipe;
-import org.betterx.betterend.registry.EndBlocks;
+//import org.betterx.bclib.blocks.BaseFurnaceBlock;
+//import org.betterx.bclib.recipes.AlloyingRecipe;
+//import org.betterx.bclib.recipes.AnvilRecipe;
+//import org.betterx.betterend.BetterEnd;
+//import org.betterx.betterend.blocks.basis.EndAnvilBlock;
+//import org.betterx.betterend.recipe.builders.InfusionRecipe;
+//import org.betterx.betterend.registry.EndBlocks;
+//
+//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.world.item.crafting.BlastingRecipe;
+//import net.minecraft.world.item.crafting.RecipeType;
+//import net.minecraft.world.level.block.Blocks;
+//
+//import net.fabricmc.fabric.api.registry.FuelRegistry;
+//import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
+//
+//import com.google.common.collect.Lists;
+//import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+//import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+//import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+//import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+//import me.shedaniel.rei.api.common.entry.EntryIngredient;
+//import me.shedaniel.rei.api.common.entry.EntryStack;
+//import me.shedaniel.rei.api.common.util.EntryIngredients;
+//import me.shedaniel.rei.api.common.util.EntryStacks;
+//import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+//
+//import java.util.Collections;
+//import java.util.List;
+//import java.util.stream.Collectors;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.BlastingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Blocks;
 
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
-
-import com.google.common.collect.Lists;
-import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
-import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.EntryStack;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.plugin.common.BuiltinPlugin;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-
-////https://github.com/shedaniel/RoughlyEnoughItems/blob/6.x-1.17/default-plugin/src/main/java/me/shedaniel/rei/plugin/client/DefaultClientPlugin.java
+/// /https://github.com/shedaniel/RoughlyEnoughItems/blob/6.x-1.17/default-plugin/src/main/java/me/shedaniel/rei/plugin/client/DefaultClientPlugin.java
 //public class REIPlugin implements REIClientPlugin {
 //    public final static ResourceLocation PLUGIN_ID = BetterEnd.C.mk("rei_plugin");
 //    public final static CategoryIdentifier<REIAlloyingFuelDisplay> ALLOYING_FUEL = CategoryIdentifier.of(

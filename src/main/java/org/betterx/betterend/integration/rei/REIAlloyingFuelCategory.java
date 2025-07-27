@@ -1,24 +1,24 @@
 package org.betterx.betterend.integration.rei;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Items;
-
-import com.google.common.collect.Lists;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.DisplayRenderer;
-import me.shedaniel.rei.api.client.gui.widgets.*;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryStack;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-
-import java.text.DecimalFormat;
-import java.util.List;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+//import net.minecraft.client.Minecraft;
+//import net.minecraft.client.gui.GuiGraphics;
+//import net.minecraft.network.chat.Component;
+//import net.minecraft.world.item.Items;
+//
+//import com.google.common.collect.Lists;
+//import me.shedaniel.math.Point;
+//import me.shedaniel.math.Rectangle;
+//import me.shedaniel.rei.api.client.gui.DisplayRenderer;
+//import me.shedaniel.rei.api.client.gui.widgets.*;
+//import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+//import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+//import me.shedaniel.rei.api.common.entry.EntryStack;
+//import me.shedaniel.rei.api.common.util.EntryStacks;
+//
+//import java.text.DecimalFormat;
+//import java.util.List;
+//import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.Nullable;
 
 //public class REIAlloyingFuelCategory implements DisplayCategory<REIAlloyingFuelDisplay> {
 //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");

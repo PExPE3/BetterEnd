@@ -8,6 +8,7 @@ import org.betterx.betterend.item.material.ToolsWithHeadsSet;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
 import org.betterx.wover.block.api.BlockDefinition;
+import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.complex.api.equipment.ArmorTier;
 import org.betterx.wover.complex.api.equipment.ToolTier;
 import org.betterx.wover.recipe.api.RecipeBuilder;
@@ -132,8 +133,9 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
     @Override
     protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
         super.addCommonBlockDefinitions(slot, blockDefinition);
+
         blockDefinition
-                .getProperties()
+                .addTrait(BlockTraits.METAL_BLOCK)
                 .mapColor(MapColor.METAL)
                 .instrument(NoteBlockInstrument.IRON_XYLOPHONE)
                 .strength(5.0F, 6.0F)

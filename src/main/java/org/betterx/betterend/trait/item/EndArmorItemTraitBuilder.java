@@ -106,7 +106,7 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
                     throw new IllegalArgumentException("Values for " + slot + " are not defined for " + tier);
                 }
 
-                definition.getProperties().durability(slot.armorType.getDurability(values.durability()));
+                definition.durability(slot.armorType.getDurability(values.durability()));
 
                 if (defenseDivider > 0) {
                     definition.addAttribute(

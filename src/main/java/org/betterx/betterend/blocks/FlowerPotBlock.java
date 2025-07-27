@@ -1,14 +1,11 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.client.models.BasePatterns;
 import org.betterx.bclib.client.models.ModelsHelper;
 import org.betterx.bclib.client.models.ModelsHelper.MultiPartBuilder;
 import org.betterx.bclib.client.models.PatternsHelper;
-import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.PostInitable;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.interfaces.RuntimeBlockModelProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.JsonFactory;
@@ -18,6 +15,8 @@ import org.betterx.betterend.client.models.Patterns;
 import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.interfaces.PottableTerrain;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
@@ -40,6 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -51,7 +51,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.google.common.collect.Lists;
@@ -65,17 +64,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvider, PostInitable, RuntimeBlockModelProvider {
+public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, RuntimeBlockModelProvider {
     private static final IntegerProperty PLANT_ID = EndBlockProperties.PLANT_ID;
     private static final IntegerProperty SOIL_ID = EndBlockProperties.SOIL_ID;
-    private static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
+    public static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
     private static final VoxelShape SHAPE_EMPTY;
     private static final VoxelShape SHAPE_FULL;
     private static Block[] plants;
     private static Block[] soils;
 
-    public FlowerPotBlock(Block source) {
-        super(BlockBehaviour.Properties.ofFullCopy(source).luminance(state -> state.getValue(POT_LIGHT) * 5));
+    public FlowerPotBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(
                 this.defaultBlockState()
                     .setValue(PLANT_ID, 0)
@@ -321,7 +320,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
             );
 
             if (Minecraft.getInstance().getResourceManager().getResource(objSource).isPresent()) {
-                objSource = ResourceLocation.fromNamespaceAndPath(modelPath.getNamespace(), "block/" + modelPath.getPath() + "_potted");
+                objSource = ResourceLocation.fromNamespaceAndPath(
+                        modelPath.getNamespace(),
+                        "block/" + modelPath.getPath() + "_potted"
+                );
                 model.part(objSource)
                      .setTransformation(offset)
                      .setCondition(state -> state.getValue(PLANT_ID) == compareID)
@@ -329,7 +331,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                 continue;
             } else if (plants[i] instanceof SaplingBlock) {
                 ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
+                modelPath = ResourceLocation.fromNamespaceAndPath(
+                        loc.getNamespace(),
+                        "block/" + loc.getPath() + "_potted"
+                );
                 Map<String, String> textures = Maps.newHashMap();
                 textures.put("%modid%", loc.getNamespace());
                 textures.put("%texture%", loc.getPath());
@@ -343,7 +348,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                 continue;
             } else if (plants[i] instanceof PottableLeavesBlock) {
                 ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
+                modelPath = ResourceLocation.fromNamespaceAndPath(
+                        loc.getNamespace(),
+                        "block/" + loc.getPath() + "_potted"
+                );
                 Map<String, String> textures = Maps.newHashMap();
                 textures.put("%leaves%", loc.getPath().contains("lucernia") ? loc.getPath() + "_1" : loc.getPath());
                 textures.put("%stem%", loc.getPath().replace("_leaves", "_log_side"));
@@ -357,7 +365,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                 continue;
             }
 
-            objSource = ResourceLocation.fromNamespaceAndPath(modelPath.getNamespace(), "blockstates/" + modelPath.getPath() + ".json");
+            objSource = ResourceLocation.fromNamespaceAndPath(
+                    modelPath.getNamespace(),
+                    "blockstates/" + modelPath.getPath() + ".json"
+            );
             JsonObject obj = JsonFactory.getJsonObject(objSource);
             if (obj != null) {
                 JsonElement variants = obj.get("variants");
@@ -396,7 +407,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                      .add();
             } else {
                 ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
+                modelPath = ResourceLocation.fromNamespaceAndPath(
+                        loc.getNamespace(),
+                        "block/" + loc.getPath() + "_potted"
+                );
                 Map<String, String> textures = Maps.newHashMap();
                 textures.put("%modid%", loc.getNamespace());
                 textures.put("%texture%", loc.getPath());
@@ -447,15 +461,12 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         return SHAPE_EMPTY;
     }
 
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
-    }
+    @Environment(EnvType.CLIENT)
+    public static BlockModelTrait buildModel() {
+        return ClientBlockTraits.MODEL.with(
+                (key, block, generator) -> {
 
-    public static class Stone extends FlowerPotBlock implements BehaviourStone {
-        public Stone(Block source) {
-            super(source);
-        }
+                });
     }
 
     static {
