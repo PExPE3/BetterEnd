@@ -33,11 +33,7 @@ public class PathBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> {
 
     @Override
     public void configure(BlockDefinition<Block, ? extends BlockDefinition<Block, ?>> definition) {
-        super.configure(definition);
-
-
-        definition.getProperties()
-                  .isValidSpawn((state, world, pos, type) -> false);
+        definition.isValidSpawn((state, world, pos, type) -> false);
     }
 
     public static LootTableTrait.LootTableFactory drops(Block source) {

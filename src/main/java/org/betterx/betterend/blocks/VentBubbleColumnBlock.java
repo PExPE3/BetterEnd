@@ -38,8 +38,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class VentBubbleColumnBlock extends Block implements BucketPickup, LiquidBlockContainer {
-    public VentBubbleColumnBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).nonOpaque().noCollision().noLootTable());
+    public VentBubbleColumnBlock(BlockBehaviour.Properties props) {
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).noOcclusion().noCollission().noLootTable());
     }
 
     @Override

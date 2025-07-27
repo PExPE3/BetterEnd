@@ -41,6 +41,6 @@ public class Ore extends SlotFromDefinition {
 
     @Override
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ModelTraitLibrary.cube(set::getBaseBlock);
+        return ModelTraitLibrary.cube();
     }
 }

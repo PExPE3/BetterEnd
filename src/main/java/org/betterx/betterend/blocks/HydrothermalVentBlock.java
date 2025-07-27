@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.entities.BlockEntityHydrothermalVent;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -44,13 +44,8 @@ public class HydrothermalVentBlock extends BaseBlockNotFull.Stone implements Ent
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
     private static final VoxelShape SHAPE = Block.box(1, 1, 1, 15, 16, 15);
 
-    public HydrothermalVentBlock() {
-        super(BehaviourBuilders
-                .createStone()
-                .sound(SoundType.STONE)
-                .noCollission()
-                .requiresCorrectToolForDrops()
-        );
+    public HydrothermalVentBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, true).setValue(ACTIVATED, false));
     }
 

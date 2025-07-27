@@ -8,13 +8,14 @@ import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
-import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.blocks.basis.*;
 import org.betterx.betterend.complexmaterials.*;
 import org.betterx.betterend.complexmaterials.types.*;
 import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.item.material.EndToolTier;
+import org.betterx.betterend.trait.block.IceBlockTrait;
 import org.betterx.betterend.trait.block.PathBlockTrait;
+import org.betterx.betterend.trait.block.SnowBlockTrait;
 import org.betterx.betterend.trait.block.TerrainBlockTrait;
 import org.betterx.wover.block.api.BlockRegistry;
 import org.betterx.wover.block.api.DefaultBlockDefinition;
@@ -25,6 +26,7 @@ import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.recipe.api.RecipeMaterial;
 import org.betterx.wover.recipe.api.RecipeTraitLibrary;
 import org.betterx.wover.sets.api.blocks.SlotMap;
+import org.betterx.wover.sets.api.blocks.SlotType;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
@@ -189,8 +191,8 @@ public class EndBlocks {
     );
     public static final StoneMaterial UMBRALITH = new StoneMaterial("umbralith", MapColor.DEEPSLATE);
     public static final Block BRIMSTONE = defineBlock("brimstone", BrimstoneBlock::new)
-            .addTrait(BlockTraits.STONE_BLOCK)
             .replacePropertiesWithCopy(Blocks.END_STONE)
+            .addTrait(BlockTraits.STONE_BLOCK)
             .mapColor(MapColor.COLOR_BROWN)
             .randomTicks()
             .buildAndRegister();
@@ -254,22 +256,48 @@ public class EndBlocks {
             SlotMap.of(Chandelier.SLOT)
     );
 
-    public static final Block FLAVOLITE_RUNED = registerBlock("flavolite_runed", new RunedFlavolite(false));
-    public static final Block FLAVOLITE_RUNED_ETERNAL = registerBlock(
-            "flavolite_runed_eternal",
-            new RunedFlavolite(true)
-    );
+    public static final Block FLAVOLITE_RUNED = defineBlock("flavolite_runed", RunedFlavolite::new)
+            .replacePropertiesWithCopy(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
+            .strength(1, Blocks.OBSIDIAN.getExplosionResistance())
+            .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
+            .buildAndRegister();
 
-    public static final Block HYDROTHERMAL_VENT = registerBlock("hydrothermal_vent", new HydrothermalVentBlock());
-    public static final Block VENT_BUBBLE_COLUMN = registerEndBlockOnly(
-            "vent_bubble_column",
-            new VentBubbleColumnBlock()
-    );
+    public static final Block FLAVOLITE_RUNED_ETERNAL = defineBlock("flavolite_runed_eternal", RunedFlavolite::new)
+            .replacePropertiesWithCopy(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
+            .strength(-11, Blocks.BEDROCK.getExplosionResistance())
+            .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
+            .buildAndRegister();
 
-    public static final Block DENSE_SNOW = registerBlock("dense_snow", new DenseSnowBlock());
-    public static final Block EMERALD_ICE = registerBlock("emerald_ice", new EmeraldIceBlock());
-    public static final Block DENSE_EMERALD_ICE = registerBlock("dense_emerald_ice", new DenseEmeraldIceBlock());
-    public static final Block ANCIENT_EMERALD_ICE = registerBlock("ancient_emerald_ice", new AncientEmeraldIceBlock());
+    public static final Block HYDROTHERMAL_VENT = defineBlock("hydrothermal_vent", HydrothermalVentBlock::new)
+            .addTrait(BlockTraits.STONE_BLOCK)
+            .sound(SoundType.STONE)
+            .noCollission()
+            .requiresCorrectToolForDrops()
+            .buildAndRegister();
+
+    public static final Block VENT_BUBBLE_COLUMN = defineBlockOnly("vent_bubble_column", VentBubbleColumnBlock::new)
+            .replacePropertiesWithCopy(Blocks.BUBBLE_COLUMN)
+            .noOcclusion().noCollission().noLootTable()
+            .buildAndRegister();
+
+    public static final Block DENSE_SNOW = defineBlock("dense_snow", Block::new)
+            .addTrait(SnowBlockTrait.DEFAULT)
+            .buildAndRegister();
+
+    public static final Block EMERALD_ICE = defineBlock("emerald_ice", EmeraldIceBlock::new)
+            .addTrait(IceBlockTrait.DEFAULT)
+            .randomTicks()
+            .buildAndRegister();
+
+    public static final Block DENSE_EMERALD_ICE = defineBlock("dense_emerald_ice", Block::new)
+            .addTrait(IceBlockTrait.PACKED)
+            .buildAndRegister();
+
+    public static final Block ANCIENT_EMERALD_ICE = defineBlock("ancient_emerald_ice", AncientEmeraldIceBlock::new)
+            .addTrait(IceBlockTrait.BLUE)
+            .randomTicks()
+            .buildAndRegister();
+    ;
 
     public static final Block END_STONE_STALACTITE = registerBlock(
             "end_stone_stalactite",
@@ -846,17 +874,6 @@ public class EndBlocks {
     }
 
 
-    public static Block registerPedestal(
-            String name,
-            Block source
-    ) {
-        return FlowerPot
-                .asFlowerPot(defineBlock(name, (p) -> new FlowerPotBlock(p)))
-                .addTrait(FlowerPotBlock.buildModel())
-                .addTrait(FlowerPot.recipe(RecipeMaterial.of(source)))
-                .buildAndRegister();
-    }
-
     public static <T extends Block> DefaultBlockDefinition<T> defineBlock(
             String name,
             Function<BlockBehaviour.Properties, T> blockF
@@ -870,12 +887,16 @@ public class EndBlocks {
                 .defineDefaultBlock(name);
     }
 
-    public static Block registerEndBlockOnly(String name, Function<BlockBehaviour.Properties, Block> blockF) {
-        final Block block = getBlockRegistry()
-                .defineDefaultBlock(name, def -> blockF.apply(def.getProperties()))
-                .build();
+    public static <T extends Block> DefaultBlockDefinition<T> defineBlockOnly(
+            String name,
+            Function<BlockBehaviour.Properties, T> blockF
+    ) {
+        return defineBlock(name, blockF).withBlockItem((def, block) -> null);
+    }
 
-        return getBlockRegistry().registerBlockOnly(name, block);
+    public static Block registerEndBlockOnly(String name, Function<BlockBehaviour.Properties, Block> blockF) {
+        return defineBlockOnly(name, blockF)
+                .buildAndRegister();
     }
 
     @NotNull

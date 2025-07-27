@@ -18,16 +18,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.NotNull;
 
 public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce, BlockLootProvider {
-    public AncientEmeraldIceBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_ICE).randomTicks());
+    public AncientEmeraldIceBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

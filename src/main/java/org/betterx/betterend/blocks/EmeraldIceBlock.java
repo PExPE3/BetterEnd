@@ -1,17 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourIce;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.RuntimeBlockModelProvider;
 import org.betterx.wover.enchantment.api.EnchantmentUtils;
-import org.betterx.wover.loot.api.BlockLootProvider;
-import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -24,23 +15,15 @@ import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayerProvider, RuntimeBlockModelProvider, BehaviourIce, BlockLootProvider {
-    public EmeraldIceBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.ICE));
+public class EmeraldIceBlock extends HalfTransparentBlock {
+    public EmeraldIceBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.TRANSLUCENT;
-    }
 
     @Override
     public void playerDestroy(
@@ -81,20 +64,5 @@ public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayer
             world.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
             world.neighborChanged(pos, Blocks.WATER, null);
         }
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockModel getItemModel(ResourceLocation resourceLocation) {
-        return getBlockModel(resourceLocation, defaultBlockState());
-    }
-
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
-        return provider.dropWithSilkTouch(this);
     }
 }
