@@ -18,7 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class StoneLantern extends SlotFromDefinition {
-    public StoneLantern() {
+    public static final StoneLantern SLOT = new StoneLantern();
+
+    private StoneLantern() {
         super(StoneMaterial.LANTERN);
     }
 

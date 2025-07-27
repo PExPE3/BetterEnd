@@ -18,11 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Chandelier extends SlotFromDefinition {
-    private final MetalMaterial metalMaterial;
+    public static final Chandelier SLOT = new Chandelier();
 
-    public Chandelier(MetalMaterial metalMaterial) {
+    private Chandelier() {
         super(MetalMaterial.CHANDELIER);
-        this.metalMaterial = metalMaterial;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class Chandelier extends SlotFromDefinition {
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("I#I", " # ")
-                            .addMaterial('#', metalMaterial.equipment.ingot)
+                            .addMaterial('#', set.getItem(MetalMaterial.INGOT))
                             .addMaterial('I', EndItems.LUMECORN_ROD)
                             .group("end_metal_chandelier")
                             .build(context);

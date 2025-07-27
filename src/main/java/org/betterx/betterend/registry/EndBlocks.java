@@ -1,14 +1,17 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.bclib.api.v3.tag.BCLBlockTags;
-import org.betterx.bclib.blocks.*;
+import org.betterx.bclib.blocks.BaseOreBlock;
+import org.betterx.bclib.blocks.BaseVineBlock;
+import org.betterx.bclib.blocks.SimpleLeavesBlock;
+import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
 import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.blocks.basis.*;
 import org.betterx.betterend.complexmaterials.*;
-import org.betterx.betterend.complexmaterials.types.FlowerPot;
+import org.betterx.betterend.complexmaterials.types.*;
 import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.item.material.EndToolTier;
 import org.betterx.betterend.trait.block.PathBlockTrait;
@@ -21,11 +24,12 @@ import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.recipe.api.RecipeMaterial;
 import org.betterx.wover.recipe.api.RecipeTraitLibrary;
+import org.betterx.wover.sets.api.blocks.SlotMap;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
-import org.betterx.wover.tag.api.predefined.CommonPoiTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -204,27 +208,56 @@ public class EndBlocks {
             .addTrait(BlockTraits.STONE_BLOCK)
             .buildAndRegister();
 
-    public static final Block ENDSTONE_FLOWER_POT = registerFlowerPot("endstone_flower_pot", Blocks.END_STONE);
+    // Vanilla Stone Sets
+    public static final VanillaStoneSet END_STONE_SET = new VanillaStoneSet(
+            "end_stone", Blocks.END_STONE,
+            SlotMap.of(FlowerPot.SLOT, StoneLantern.SLOT, Furnace.SLOT)
+    );
+
+    public static final VanillaStoneSet ANDESITE_SET = new VanillaStoneSet(
+            "andesite", Blocks.ANDESITE,
+            SlotMap.of(Pedestal.SLOT, StoneLantern.SLOT)
+    );
+
+    public static final VanillaStoneSet DIORITE_SET = new VanillaStoneSet(
+            "diorite", Blocks.DIORITE,
+            SlotMap.of(Pedestal.SLOT, StoneLantern.SLOT)
+    );
+
+    public static final VanillaStoneSet GRANITE_SET = new VanillaStoneSet(
+            "granite", Blocks.GRANITE,
+            SlotMap.of(Pedestal.SLOT, StoneLantern.SLOT)
+    );
+
+    public static final VanillaStoneSet QUARTZ_SET = new VanillaStoneSet(
+            "quartz", Blocks.QUARTZ_BLOCK,
+            SlotMap.of(Pedestal.SLOT, StoneLantern.SLOT)
+    );
+
+    public static final VanillaStoneSet PURPUR_SET = new VanillaStoneSet(
+            "purple", Blocks.PURPUR_BLOCK,
+            SlotMap.of(Pedestal.SLOT, StoneLantern.SLOT)
+    );
+
+    public static final VanillaStoneSet BLACKSTONE_SET = new VanillaStoneSet(
+            "blackstone", Blocks.BLACKSTONE,
+            SlotMap.of(StoneLantern.SLOT)
+    );
+
+    // Vanilla Metal Sets
+    public static final VanillaMetalSet IRON_SET = new VanillaMetalSet(
+            "iron", Blocks.IRON_BLOCK, Items.IRON_INGOT,
+            SlotMap.of(Chandelier.SLOT, BulbLantern.SLOT)
+    );
+    public static final VanillaMetalSet GOLD_SET = new VanillaMetalSet(
+            "iron", Blocks.GOLD_BLOCK, Items.GOLD_INGOT,
+            SlotMap.of(Chandelier.SLOT)
+    );
 
     public static final Block FLAVOLITE_RUNED = registerBlock("flavolite_runed", new RunedFlavolite(false));
     public static final Block FLAVOLITE_RUNED_ETERNAL = registerBlock(
             "flavolite_runed_eternal",
             new RunedFlavolite(true)
-    );
-
-    public static final Block ANDESITE_PEDESTAL = registerBlock(
-            "andesite_pedestal",
-            new PedestalVanilla(Blocks.ANDESITE)
-    );
-    public static final Block DIORITE_PEDESTAL = registerBlock("diorite_pedestal", new PedestalVanilla(Blocks.DIORITE));
-    public static final Block GRANITE_PEDESTAL = registerBlock("granite_pedestal", new PedestalVanilla(Blocks.GRANITE));
-    public static final Block QUARTZ_PEDESTAL = registerBlock(
-            "quartz_pedestal",
-            new PedestalVanilla(Blocks.QUARTZ_BLOCK)
-    );
-    public static final Block PURPUR_PEDESTAL = registerBlock(
-            "purpur_pedestal",
-            new PedestalVanilla(Blocks.PURPUR_BLOCK)
     );
 
     public static final Block HYDROTHERMAL_VENT = registerBlock("hydrothermal_vent", new HydrothermalVentBlock());
@@ -720,51 +753,14 @@ public class EndBlocks {
     public static final Block RESPAWN_OBELISK = registerBlock("respawn_obelisk", new RespawnObeliskBlock());
 
     // Lanterns
-    public static final Block ANDESITE_LANTERN = registerBlock(
-            "andesite_lantern",
-            new StoneLanternBlock(Blocks.ANDESITE)
-    );
-    public static final Block DIORITE_LANTERN = registerBlock("diorite_lantern", new StoneLanternBlock(Blocks.DIORITE));
-    public static final Block GRANITE_LANTERN = registerBlock("granite_lantern", new StoneLanternBlock(Blocks.GRANITE));
-    public static final Block QUARTZ_LANTERN = registerBlock(
-            "quartz_lantern",
-            new StoneLanternBlock(Blocks.QUARTZ_BLOCK)
-    );
-    public static final Block PURPUR_LANTERN = registerBlock(
-            "purpur_lantern",
-            new StoneLanternBlock(Blocks.PURPUR_BLOCK)
-    );
-    public static final Block END_STONE_LANTERN = registerBlock(
-            "end_stone_lantern",
-            new StoneLanternBlock(Blocks.END_STONE)
-    );
-    public static final Block BLACKSTONE_LANTERN = registerBlock(
-            "blackstone_lantern",
-            new StoneLanternBlock(Blocks.BLACKSTONE)
-    );
-
-    public static final Block IRON_BULB_LANTERN = registerBlock("iron_bulb_lantern", new BulbVineLanternBlock());
     public static final ColoredMaterial IRON_BULB_LANTERN_COLORED = new ColoredMaterial(
             BulbVineLanternColoredBlock::new,
-            IRON_BULB_LANTERN,
+            IRON_SET.getBlock(MetalMaterial.BULB_LANTERN),
             false
     );
 
-    public static final Block IRON_CHANDELIER = EndBlocks.registerBlock(
-            "iron_chandelier",
-            new ChandelierBlock(Blocks.GOLD_BLOCK)
-    );
-    public static final Block GOLD_CHANDELIER = EndBlocks.registerBlock(
-            "gold_chandelier",
-            new ChandelierBlock(Blocks.GOLD_BLOCK)
-    );
 
     // Blocks With Entity //
-    public static final Block END_STONE_FURNACE = registerBlock(
-            "end_stone_furnace",
-            new BaseFurnaceBlock.Stone(Blocks.END_STONE),
-            CommonPoiTags.ARMORER_WORKSTATION
-    );
     public static final Block END_STONE_SMELTER = registerBlock("end_stone_smelter", new EndStoneSmelter());
     public static final Block ETERNAL_PEDESTAL = registerBlock("eternal_pedestal", new EternalPedestal());
     public static final Block INFUSION_PEDESTAL = registerBlock("infusion_pedestal", new InfusionPedestal());
@@ -849,7 +845,8 @@ public class EndBlocks {
                 .buildAndRegister();
     }
 
-    public static Block registerFlowerPot(
+
+    public static Block registerPedestal(
             String name,
             Block source
     ) {

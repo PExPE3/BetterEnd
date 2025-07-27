@@ -69,10 +69,10 @@ public class StoneMaterial extends BlockSet<StoneMaterial> implements MaterialMa
                 StoneSlots.BRICK_SLAB,
                 StoneSlots.BRICK_STAIRS,
                 StoneSlots.BRICK_WALL,
-                new Pedestal(),
-                new StoneLantern(),
-                new Furnace(),
-                new FlowerPot()
+                Pedestal.SLOT,
+                StoneLantern.SLOT,
+                Furnace.SLOT,
+                FlowerPot.SLOT
         );
     }
 

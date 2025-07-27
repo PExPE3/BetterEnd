@@ -20,7 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FlowerPot extends SlotFromDefinition {
-    public FlowerPot() {
+    public static final FlowerPot SLOT = new FlowerPot();
+
+    private FlowerPot() {
         super(StoneMaterial.FLOWER_POT);
     }
 

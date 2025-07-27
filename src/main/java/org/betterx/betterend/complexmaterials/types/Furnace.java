@@ -14,12 +14,15 @@ import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
+import org.betterx.wover.tag.api.predefined.CommonPoiTags;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Furnace extends SlotFromDefinition {
-    public Furnace() {
+    public static final Furnace SLOT = new Furnace();
+
+    private Furnace() {
         super(StoneMaterial.FURNACE);
     }
 
@@ -40,6 +43,7 @@ public class Furnace extends SlotFromDefinition {
         def
                 .lightLevel(state -> state.getValue(LIT) ? 15 : 0)
                 .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
+                .addTags(CommonPoiTags.ARMORER_WORKSTATION)
                 .addItemTags(CommonItemTags.FURNACES);
     }
 

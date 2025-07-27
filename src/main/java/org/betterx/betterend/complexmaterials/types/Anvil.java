@@ -19,11 +19,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Anvil extends SlotFromDefinition {
-    private final MetalMaterial metalMaterial;
+    public final int level;
 
-    public Anvil(MetalMaterial metalMaterial) {
+    public Anvil(int level) {
         super(MetalMaterial.ANVIL);
-        this.metalMaterial = metalMaterial;
+        this.level = level;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Anvil extends SlotFromDefinition {
         return registry.defineDefaultBlock(
                 name, (def) -> new LeveledAnvilBlock(
                         def.getProperties(),
-                        metalMaterial.equipment.toolTier.level
+                        level
                 )
         );
     }
@@ -53,8 +53,8 @@ public class Anvil extends SlotFromDefinition {
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("###", " I ", "III")
-                            .addMaterial('#', metalMaterial.getBaseBlock(), metalMaterial.getBlock(MetalMaterial.TILE))
-                            .addMaterial('I', metalMaterial.equipment.ingot)
+                            .addMaterial('#', set.getBaseBlock(), set.getBlock(MetalMaterial.TILE))
+                            .addMaterial('I', set.getItem(MetalMaterial.INGOT))
                             .group("end_metal_anvil")
                             .build(context);
                 });
@@ -64,4 +64,6 @@ public class Anvil extends SlotFromDefinition {
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return BaseAnvilBlock.buildModel(set, traitLookup);
     }
+
+
 }

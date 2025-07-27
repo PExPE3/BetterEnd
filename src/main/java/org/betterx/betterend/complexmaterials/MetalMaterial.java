@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialManager.Material {
     public static final SlotType TILE = new SlotType("tile");
@@ -41,6 +43,9 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
     public static final SlotType CHANDELIER = new SlotType("chandelier");
     public static final SlotType BULB_LANTERN = new SlotType("bulb_lantern");
     public static final SlotType ANVIL = new SlotType("anvil");
+
+    public static final SlotType INGOT = new SlotType("ingot");
+    public static final SlotType NUGGET = new SlotType("nugget");
 
     public ColoredMaterial bulb_lantern_colored;
 
@@ -159,9 +164,9 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 new Tile(this),
                 new Chain(this),
                 new Bars(this),
-                new Chandelier(this),
-                new BulbLantern(this),
-                new Anvil(this),
+                Chandelier.SLOT,
+                BulbLantern.SLOT,
+                new Anvil(this.equipment.toolTier.level),
                 StoneSlots.SLAB,
                 StoneSlots.STAIRS,
                 WoodSlots.DOOR,
@@ -215,4 +220,13 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
 
     }
 
+    @Override
+    public @Nullable Item getItem(@NotNull SlotType type) {
+        if (type.equals(NUGGET)) {
+            return equipment.nugget;
+        } else if (type.equals(INGOT)) {
+            return equipment.ingot;
+        }
+        return super.getItem(type);
+    }
 }

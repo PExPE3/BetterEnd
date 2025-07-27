@@ -20,11 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BulbLantern extends SlotFromDefinition {
-    private final MetalMaterial metalMaterial;
+    public static final BulbLantern SLOT = new BulbLantern();
 
-    public BulbLantern(MetalMaterial metalMaterial) {
+    private BulbLantern() {
         super(MetalMaterial.BULB_LANTERN);
-        this.metalMaterial = metalMaterial;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class BulbLantern extends SlotFromDefinition {
                             .crafting(key.location(), block)
                             .shape("C", "I", "#")
                             .addMaterial('C', set.getBlock(MetalMaterial.CHAIN))
-                            .addMaterial('I', metalMaterial.equipment.ingot)
+                            .addMaterial('I', set.getItem(MetalMaterial.INGOT))
                             .addMaterial('#', EndItems.GLOWING_BULB)
                             .build(context);
                 });
