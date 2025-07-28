@@ -2,19 +2,21 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.interfaces.BehaviourWood;
 import org.betterx.bclib.blocks.BaseBlock;
+import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.util.BlocksHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,21 +27,20 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
-public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlock, RenderLayerProvider, BehaviourWood {
+public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlock, BehaviourWood {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty LEAF = BooleanProperty.create("leaf");
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final Map<Axis, VoxelShape> SHAPES = Maps.newEnumMap(Axis.class);
 
-    public EndLotusStemBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public EndLotusStemBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                      .setValue(SHAPE, TripleShape.MIDDLE)
                                                      .setValue(LEAF, false)
@@ -85,24 +86,21 @@ public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(
+    protected @NotNull BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
-            BlockPos pos,
-            BlockPos posFrom
+            @NotNull LevelReader levelReader,
+            @NotNull ScheduledTickAccess scheduledTickAccess,
+            @NotNull BlockPos pos,
+            @NotNull Direction direction,
+            @NotNull BlockPos blockPos2,
+            @NotNull BlockState blockState2,
+            @NotNull RandomSource randomSource
     ) {
-        if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+
+        if (state.getValue(WATERLOGGED) && levelReader instanceof ServerLevelAccessor sla) {
+            sla.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelReader));
         }
         return state;
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     static {

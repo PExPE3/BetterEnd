@@ -30,7 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -63,6 +63,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, RuntimeBlockModelProvider {
     private static final IntegerProperty PLANT_ID = EndBlockProperties.PLANT_ID;
@@ -205,23 +206,22 @@ public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, Ru
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
-            ItemStack itemStack,
-            BlockState state,
+    protected @NotNull InteractionResult useItemOn(
+            @NotNull ItemStack itemStack,
+            @NotNull BlockState state,
             Level level,
-            BlockPos pos,
-            Player player,
-            InteractionHand hand,
-            BlockHitResult hit
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand interactionHand,
+            @NotNull BlockHitResult blockHitResult
     ) {
         if (level.isClientSide) {
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
         int soilID = state.getValue(SOIL_ID);
         if (soilID == 0 || soilID > soils.length || soils[soilID - 1] == null) {
             if (!(itemStack.getItem() instanceof BlockItem)) {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             }
             Block block = ((BlockItem) itemStack.getItem()).getBlock();
             for (int i = 0; i < soils.length; i++) {
@@ -240,10 +240,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, Ru
                             1,
                             1
                     );
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         int plantID = state.getValue(PLANT_ID);
@@ -251,22 +251,22 @@ public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, Ru
             if (plantID > 0 && plantID <= plants.length && plants[plantID - 1] != null) {
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, 0).setValue(POT_LIGHT, 0));
                 player.addItem(new ItemStack(plants[plantID - 1]));
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             if (soilID > 0 && soilID <= soils.length && soils[soilID - 1] != null) {
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(SOIL_ID, 0));
                 player.addItem(new ItemStack(soils[soilID - 1]));
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         if (!(itemStack.getItem() instanceof BlockItem)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         BlockItem item = (BlockItem) itemStack.getItem();
         for (int i = 0; i < plants.length; i++) {
             if (item.getBlock() == plants[i]) {
                 if (!((PottablePlant) plants[i]).canPlantOn(soils[soilID - 1])) {
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    return InteractionResult.TRY_WITH_EMPTY_HAND;
                 }
                 int light = plants[i].defaultBlockState().getLightEmission() / 5;
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, i + 1).setValue(POT_LIGHT, light));
@@ -283,10 +283,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements PostInitable, Ru
                 if (!player.isCreative()) {
                     itemStack.shrink(1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override

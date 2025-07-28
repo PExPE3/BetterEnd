@@ -9,17 +9,13 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class GlowingHymenophoreBlock extends BaseBlock.Wood implements AddMineableAxe, BlockModelProvider {
-    public GlowingHymenophoreBlock() {
-        super(Properties.of()
-                        .lightLevel((bs) -> 15)
-                        .sound(SoundType.WART_BLOCK)
-        );
+    public GlowingHymenophoreBlock(Properties props) {
+        super(props);
     }
 
     @Override
@@ -32,12 +28,13 @@ public class GlowingHymenophoreBlock extends BaseBlock.Wood implements AddMineab
             WoverBlockModelGenerators generator,
             Block glowingHymenophoreBlock
     ) {
-        generator.acceptBlockState(BlockModelGenerators.createSimpleBlock(glowingHymenophoreBlock,
-                EndModels.CUBE_NO_SHADE.create(
+        generator.acceptBlockState(BlockModelGenerators.createSimpleBlock(
+                glowingHymenophoreBlock,
+                BlockModelGenerators.plainVariant(EndModels.CUBE_NO_SHADE.create(
                         glowingHymenophoreBlock,
                         TextureMapping.defaultTexture(glowingHymenophoreBlock),
                         generator.modelOutput()
-                )
+                ))
         ));
     }
 }

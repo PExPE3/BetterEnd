@@ -28,13 +28,12 @@ public class TerrainBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> 
     public void configure(BlockDefinition<Block, ? extends BlockDefinition<Block, ?>> definition) {
         super.configure(definition);
 
-        definition.addTags(CommonBlockTags.END_STONES);
-
-        definition.getProperties()
-                  .instrument(NoteBlockInstrument.BASEDRUM)
-                  .requiresCorrectToolForDrops()
-                  .strength(3.0F, 9.0F)
-                  .sound(BlockSounds.TERRAIN_SOUND)
-                  .randomTicks();
+        definition
+                .addTags(CommonBlockTags.END_STONES)
+                .instrument(NoteBlockInstrument.BASEDRUM)
+                .requiresCorrectToolForDrops()
+                .strength(3.0F, 9.0F)
+                .sound(BlockSounds.TERRAIN_SOUND)
+                .randomTicks();
     }
 }

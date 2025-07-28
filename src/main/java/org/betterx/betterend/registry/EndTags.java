@@ -62,6 +62,73 @@ public class EndTags {
             "incorrect_for_aeternium_tool"
     );
 
+
+    /* Block Survival Tags */
+    public static final TagKey<Block> SURVIVES_ON_PALLIDIUM = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/pallidium"
+    );
+    public static final TagKey<Block> SURVIVES_ON_AMBER_MOSS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/amber_moss"
+    );
+    public static final TagKey<Block> SURVIVES_ON_BRIMSTONE = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/brimstone"
+    );
+    public static final TagKey<Block> SURVIVES_ON_CHORUS_NYLIUM = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/chorus_nylium"
+    );
+    public static final TagKey<Block> SURVIVES_ON_END_BONE = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/end_bone"
+    );
+    public static final TagKey<Block> SURVIVES_ON_END_MOSS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/end_moss"
+    );
+    public static final TagKey<Block> SURVIVES_ON_END_STONE = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/end_stone"
+    );
+    public static final TagKey<Block> SURVIVES_ON_END_STONE_OR_TREES = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/end_stone_or_trees"
+    );
+    public static final TagKey<Block> SURVIVES_ON_JUNGLE_MOSS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/jungle_moss"
+    );
+    public static final TagKey<Block> SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/jungle_moss_or_mycelium"
+    );
+    public static final TagKey<Block> SURVIVES_ON_MOSS_OR_DUST = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/moss_or_dust"
+    );
+    public static final TagKey<Block> SURVIVES_ON_MOSS_OR_MYCELIUM = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/moss_or_mycelium"
+    );
+    public static final TagKey<Block> SURVIVES_ON_PINK_MOSS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/pink_moss"
+    );
+    public static final TagKey<Block> SURVIVES_ON_RUTISCUS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/rutiscus"
+    );
+    public static final TagKey<Block> SURVIVES_ON_SHADOW_GRASS = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/shadow_grass"
+    );
+    public static final TagKey<Block> SURVIVES_ON_SULPHURIC_ROCK = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/sulphuric_rock"
+    );
+
     public static void register() {
 
 

@@ -5,6 +5,7 @@ import org.betterx.bclib.blocks.BaseOreBlock;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.blocks.SimpleLeavesBlock;
 import org.betterx.bclib.blocks.StalactiteBlock;
+import org.betterx.bclib.trait.block.*;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
@@ -14,8 +15,8 @@ import org.betterx.betterend.complexmaterials.types.*;
 import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.item.material.EndToolTier;
 import org.betterx.betterend.trait.block.IceBlockTrait;
-import org.betterx.betterend.trait.block.PathBlockTrait;
 import org.betterx.betterend.trait.block.SnowBlockTrait;
+import org.betterx.betterend.trait.block.StalactiteBlockTrait;
 import org.betterx.betterend.trait.block.TerrainBlockTrait;
 import org.betterx.wover.block.api.BlockRegistry;
 import org.betterx.wover.block.api.DefaultBlockDefinition;
@@ -281,56 +282,63 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block DENSE_SNOW = defineBlock("dense_snow", Block::new)
-            .addTrait(SnowBlockTrait.DEFAULT)
+            .addTrait(SnowBlockTrait.withDefault())
             .buildAndRegister();
 
     public static final Block EMERALD_ICE = defineBlock("emerald_ice", EmeraldIceBlock::new)
-            .addTrait(IceBlockTrait.DEFAULT)
+            .addTrait(IceBlockTrait.withBase(Blocks.ICE))
             .randomTicks()
             .buildAndRegister();
 
     public static final Block DENSE_EMERALD_ICE = defineBlock("dense_emerald_ice", Block::new)
-            .addTrait(IceBlockTrait.PACKED)
+            .addTrait(IceBlockTrait.withBase(Blocks.PACKED_ICE))
             .buildAndRegister();
 
     public static final Block ANCIENT_EMERALD_ICE = defineBlock("ancient_emerald_ice", AncientEmeraldIceBlock::new)
-            .addTrait(IceBlockTrait.BLUE)
+            .addTrait(IceBlockTrait.withBase(Blocks.BLUE_ICE))
             .randomTicks()
             .buildAndRegister();
     ;
 
-    public static final Block END_STONE_STALACTITE = registerBlock(
-            "end_stone_stalactite",
-            new StalactiteBlock.Stone(Blocks.END_STONE)
-    );
-    public static final Block END_STONE_STALACTITE_CAVEMOSS = registerBlock(
+    public static final Block END_STONE_STALACTITE = defineBlock("end_stone_stalactite", StalactiteBlock::new)
+            .addTrait(StalactiteBlockTrait.withSource(Blocks.END_STONE))
+            .buildAndRegister();
+
+    public static final Block END_STONE_STALACTITE_CAVEMOSS = defineBlock(
             "end_stone_stalactite_cavemoss",
-            new StalactiteBlock.Stone(CAVE_MOSS)
-    );
+            StalactiteBlock::new
+    ).addTrait(StalactiteBlockTrait.withSource(CAVE_MOSS))
+     .buildAndRegister();
 
     // Wooden Materials And Trees //
-    public static final Block MOSSY_GLOWSHROOM_SAPLING = registerBlock(
+    public static final Block MOSSY_GLOWSHROOM_SAPLING = defineBlock(
             "mossy_glowshroom_sapling",
-            new MossyGlowshroomSaplingBlock()
-    );
-    public static final Block MOSSY_GLOWSHROOM_CAP = registerBlock(
-            "mossy_glowshroom_cap",
-            new MossyGlowshroomCapBlock()
-    );
-    public static final Block MOSSY_GLOWSHROOM_HYMENOPHORE = registerBlock(
+            MossyGlowshroomSaplingBlock::new
+    ).addTrait(SaplingBlockTrait.withLight(7))
+     .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
+     .buildAndRegister();
+
+    public static final Block MOSSY_GLOWSHROOM_CAP = defineBlock("mossy_glowshroom_cap", MossyGlowshroomCapBlock::new)
+            .addTrait(BlockTraits.WOOD_BLOCK)
+            .buildAndRegister();
+
+    public static final Block MOSSY_GLOWSHROOM_HYMENOPHORE = defineBlock(
             "mossy_glowshroom_hymenophore",
-            new GlowingHymenophoreBlock()
-    );
-    public static final Block MOSSY_GLOWSHROOM_FUR = registerBlock(
-            "mossy_glowshroom_fur",
-            new FurBlock(
-                    MapColor.COLOR_LIGHT_BLUE,
-                    MOSSY_GLOWSHROOM_SAPLING,
-                    15,
-                    16,
-                    true
-            )
-    );
+            GlowingHymenophoreBlock::new
+    ).addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
+     .addTrait(ClientBlockTraits.MODEL.with(
+             (key, block, generator) ->
+                     GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, block)
+     ))
+     .addTrait(BlockTraits.LOOT_TABLE)
+     .lightLevel((_s) -> 15)
+     .sound(SoundType.WART_BLOCK)
+     .buildAndRegister();
+
+    public static final Block MOSSY_GLOWSHROOM_FUR = defineBlock("mossy_glowshroom_fur", FurBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_LIGHT_BLUE, 15, true, 16, MOSSY_GLOWSHROOM_SAPLING))
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial MOSSY_GLOWSHROOM = new EndWoodenComplexMaterial(
             "mossy_glowshroom",
             MapColor.COLOR_GRAY,
@@ -338,17 +346,15 @@ public class EndBlocks {
             Blocks.GRAY_WOOL
     ).init();
 
-    public static final Block PYTHADENDRON_SAPLING = registerBlock(
-            "pythadendron_sapling",
-            new PythadendronSaplingBlock()
-    );
-    public static final Block PYTHADENDRON_LEAVES = registerBlock(
-            "pythadendron_leaves",
-            new PottableLeavesBlock(
-                    PYTHADENDRON_SAPLING,
-                    MapColor.COLOR_MAGENTA
-            )
-    );
+    public static final Block PYTHADENDRON_SAPLING = defineBlock("pythadendron_sapling", PythadendronSaplingBlock::new)
+            .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PURPLE))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
+            .buildAndRegister();
+
+    public static final Block PYTHADENDRON_LEAVES = defineBlock("pythadendron_leaves", PottableLeavesBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, PYTHADENDRON_SAPLING))
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial PYTHADENDRON = new EndWoodenComplexMaterial(
             "pythadendron",
             MapColor.COLOR_MAGENTA,
@@ -356,10 +362,24 @@ public class EndBlocks {
             Blocks.BLACK_WOOL
     ).init();
 
-    public static final Block END_LOTUS_SEED = registerBlock("end_lotus_seed", new EndLotusSeedBlock());
-    public static final Block END_LOTUS_STEM = registerBlock("end_lotus_stem", new EndLotusStemBlock());
-    public static final Block END_LOTUS_LEAF = registerEndBlockOnly("end_lotus_leaf", new EndLotusLeafBlock());
-    public static final Block END_LOTUS_FLOWER = registerEndBlockOnly("end_lotus_flower", new EndLotusFlowerBlock());
+    public static final Block END_LOTUS_SEED = defineBlock("end_lotus_seed", EndLotusSeedBlock::new)
+            .addTrait(WaterSeedBlockTrait.withColor(MapColor.COLOR_CYAN))
+            .buildAndRegister();
+
+    public static final Block END_LOTUS_STEM = defineBlock("end_lotus_stem", EndLotusStemBlock::new)
+            .addTrait(BlockTraits.WOOD_BLOCK)
+            .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
+            .buildAndRegister();
+
+    public static final Block END_LOTUS_LEAF = defineBlockOnly("end_lotus_leaf", EndLotusLeafBlock::new)
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PINK, true, true))
+            .buildAndRegister();
+
+    public static final Block END_LOTUS_FLOWER = defineBlockOnly("end_lotus_flower", EndLotusFlowerBlock::new)
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PINK, true, true))
+            .lightLevel((bs) -> 15)
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial END_LOTUS = new EndWoodenComplexMaterial(
             "end_lotus",
             MapColor.COLOR_LIGHT_BLUE,
@@ -367,14 +387,14 @@ public class EndBlocks {
             Blocks.LIGHT_BLUE_WOOL
     ).init();
 
-    public static final Block LACUGROVE_SAPLING = registerBlock("lacugrove_sapling", new LacugroveSaplingBlock());
-    public static final Block LACUGROVE_LEAVES = registerBlock(
-            "lacugrove_leaves",
-            new PottableLeavesBlock(
-                    LACUGROVE_SAPLING,
-                    MapColor.COLOR_CYAN
-            )
-    );
+    public static final Block LACUGROVE_SAPLING = defineBlock("lacugrove_sapling", LacugroveSaplingBlock::new)
+            .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_CYAN))
+            .buildAndRegister();
+
+    public static final Block LACUGROVE_LEAVES = defineBlock("lacugrove_leaves", PottableLeavesBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false, LACUGROVE_SAPLING))
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial LACUGROVE = new EndWoodenComplexMaterial(
             "lacugrove",
             MapColor.COLOR_BROWN,
@@ -382,14 +402,14 @@ public class EndBlocks {
             Blocks.CYAN_WOOL
     ).init();
 
-    public static final Block DRAGON_TREE_SAPLING = registerBlock("dragon_tree_sapling", new DragonTreeSaplingBlock());
-    public static final Block DRAGON_TREE_LEAVES = registerBlock(
-            "dragon_tree_leaves",
-            new PottableLeavesBlock(
-                    DRAGON_TREE_SAPLING,
-                    MapColor.COLOR_MAGENTA
-            )
-    );
+    public static final Block DRAGON_TREE_SAPLING = defineBlock("dragon_tree_sapling", DragonTreeSaplingBlock::new)
+            .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_MAGENTA))
+            .buildAndRegister();
+
+    public static final Block DRAGON_TREE_LEAVES = defineBlock("dragon_tree_leaves", PottableLeavesBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, DRAGON_TREE_SAPLING))
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial DRAGON_TREE = new EndWoodenComplexMaterial(
             "dragon_tree",
             MapColor.COLOR_BLACK,
@@ -397,19 +417,23 @@ public class EndBlocks {
             , Blocks.BLACK_WOOL
     ).init();
 
-    public static final Block TENANEA_SAPLING = registerBlock("tenanea_sapling", new TenaneaSaplingBlock());
-    public static final Block TENANEA_LEAVES = registerBlock(
-            "tenanea_leaves",
-            new PottableLeavesBlock(
-                    TENANEA_SAPLING,
-                    MapColor.COLOR_PINK
-            )
-    );
-    public static final Block TENANEA_FLOWERS = registerBlock("tenanea_flowers", new TenaneaFlowersBlock());
-    public static final Block TENANEA_OUTER_LEAVES = registerBlock(
-            "tenanea_outer_leaves",
-            new FurBlock(MapColor.COLOR_PINK, TENANEA_SAPLING, 32)
-    );
+    public static final Block TENANEA_SAPLING = defineBlock("tenanea_sapling", TenaneaSaplingBlock::new)
+            .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PINK))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_PINK_MOSS))
+            .buildAndRegister();
+
+    public static final Block TENANEA_LEAVES = defineBlock("tenanea_leaves", PottableLeavesBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, TENANEA_SAPLING))
+            .buildAndRegister();
+
+    public static final Block TENANEA_FLOWERS = defineBlock("tenanea_flowers", TenaneaFlowersBlock::new)
+            .addTrait(VineBlockTrait.withColor(MapColor.COLOR_PINK, 15))
+            .buildAndRegister();
+
+    public static final Block TENANEA_OUTER_LEAVES = defineBlock("tenanea_outer_leaves", FurBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 32, TENANEA_SAPLING))
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial TENANEA = new EndWoodenComplexMaterial(
             "tenanea",
             MapColor.COLOR_BROWN,
@@ -417,8 +441,16 @@ public class EndBlocks {
             Blocks.PINK_WOOL
     ).init();
 
-    public static final Block HELIX_TREE_SAPLING = registerBlock("helix_tree_sapling", new HelixTreeSaplingBlock());
-    public static final Block HELIX_TREE_LEAVES = registerBlock("helix_tree_leaves", new HelixTreeLeavesBlock());
+    public static final Block HELIX_TREE_SAPLING = defineBlock("helix_tree_sapling", HelixTreeSaplingBlock::new)
+            .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_ORANGE))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
+            .buildAndRegister();
+
+    public static final Block HELIX_TREE_LEAVES = defineBlock("helix_tree_leaves", HelixTreeLeavesBlock::new)
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 8, HELIX_TREE_SAPLING))
+            .sound(SoundType.WART_BLOCK)
+            .buildAndRegister();
+
     public static final EndWoodenComplexMaterial HELIX_TREE = new EndWoodenComplexMaterial(
             "helix_tree",
             MapColor.COLOR_GRAY,
@@ -426,22 +458,42 @@ public class EndBlocks {
             Blocks.GRAY_WOOL
     ).init();
 
-    public static final Block UMBRELLA_TREE_SAPLING = registerBlock(
+    public static final Block UMBRELLA_TREE_SAPLING = defineBlock(
             "umbrella_tree_sapling",
-            new UmbrellaTreeSaplingBlock()
-    );
-    public static final Block UMBRELLA_TREE_MEMBRANE = registerBlock(
+            UmbrellaTreeSaplingBlock::new
+    ).addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_BLUE))
+     .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS))
+     .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+     .buildAndRegister();
+
+    public static final Block UMBRELLA_TREE_MEMBRANE = defineBlock(
             "umbrella_tree_membrane",
-            new UmbrellaTreeMembraneBlock()
-    );
-    public static final Block UMBRELLA_TREE_CLUSTER = registerBlock(
+            UmbrellaTreeMembraneBlock::new
+    ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
+     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 8, UMBRELLA_TREE_SAPLING))
+     .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+     .buildAndRegister();
+
+    public static final Block UMBRELLA_TREE_CLUSTER = defineBlock(
             "umbrella_tree_cluster",
-            new UmbrellaTreeClusterBlock()
-    );
-    public static final Block UMBRELLA_TREE_CLUSTER_EMPTY = registerBlock(
+            UmbrellaTreeClusterBlock::new
+    ).replacePropertiesWithCopy(Blocks.NETHER_WART_BLOCK)
+     .addTrait(BlockTraits.WOOD_BLOCK)
+     .addTrait(BlockTraits.LOOT_TABLE)
+     .mapColor(MapColor.COLOR_PURPLE)
+     .lightLevel((bs) -> 15)
+     .buildAndRegister();
+
+    public static final Block UMBRELLA_TREE_CLUSTER_EMPTY = defineBlock(
             "umbrella_tree_cluster_empty",
-            new UmbrellaTreeClusterEmptyBlock()
-    );
+            UmbrellaTreeClusterEmptyBlock::new
+    ).replacePropertiesWithCopy(Blocks.NETHER_WART_BLOCK)
+     .addTrait(BlockTraits.WOOD_BLOCK)
+     .addTrait(BlockTraits.LOOT_TABLE)
+     .mapColor(MapColor.COLOR_PURPLE)
+     .randomTicks()
+     .buildAndRegister();
+
     public static final EndWoodenComplexMaterial UMBRELLA_TREE = new EndWoodenComplexMaterial(
             "umbrella_tree",
             MapColor.COLOR_BLUE,
@@ -449,17 +501,19 @@ public class EndBlocks {
             Blocks.MAGENTA_WOOL
     ).init();
 
-    public static final Block JELLYSHROOM_CAP_PURPLE = registerBlock(
+    public static final Block JELLYSHROOM_CAP_PURPLE = defineBlock(
             "jellyshroom_cap_purple",
-            new JellyshroomCapBlock(
-                    217,
-                    142,
-                    255,
-                    164,
-                    0,
-                    255
+            p -> new JellyshroomCapBlock(
+                    p,
+                    217, 142, 255,
+                    164, 0, 255
             )
-    );
+    ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
+     .mapColor(MapColor.COLOR_PURPLE)
+     .addTrait(BlockTraits.LOOT_TABLE)
+     .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+     .buildAndRegister();
+
     public static final EndWoodenComplexMaterial JELLYSHROOM = new EndWoodenComplexMaterial(
             "jellyshroom",
             MapColor.COLOR_PURPLE,
@@ -865,11 +919,9 @@ public class EndBlocks {
             String name,
             Block source
     ) {
-        return defineBlock(name, (p) -> new DirtPathBlock(p))
+        return defineBlock(name, DirtPathBlock::new)
                 .replacePropertiesWithCopy(source)
-                .addTrait(PathBlockTrait.DEFAULT)
-                .addTrait(PathBlockTrait.buildModel(source))
-                .addTrait(BlockTraits.LOOT_TABLE.with(PathBlockTrait.drops(source)))
+                .addTrait(PathBlockTrait.withSource(source))
                 .buildAndRegister();
     }
 

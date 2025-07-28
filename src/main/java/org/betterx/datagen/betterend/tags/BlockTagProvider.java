@@ -26,6 +26,47 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         context.add(CommonBlockTags.END_STONES, bl);
     }
 
+    private static void addSurvivesOn(TagBootstrapContext<Block> context) {
+        context.add(
+                EndTags.SURVIVES_ON_PALLIDIUM,
+                EndBlocks.PALLIDIUM_FULL,
+                EndBlocks.PALLIDIUM_HEAVY,
+                EndBlocks.PALLIDIUM_THIN,
+                EndBlocks.PALLIDIUM_TINY
+        );
+        context.add(EndTags.SURVIVES_ON_AMBER_MOSS, EndBlocks.AMBER_MOSS);
+        context.add(EndTags.SURVIVES_ON_BRIMSTONE, EndBlocks.BRIMSTONE);
+        context.add(EndTags.SURVIVES_ON_CHORUS_NYLIUM, EndBlocks.CHORUS_NYLIUM);
+        context.add(
+                EndTags.SURVIVES_ON_END_BONE,
+                EndBlocks.SANGNUM,
+                EndBlocks.MOSSY_OBSIDIAN,
+                EndBlocks.MOSSY_DRAGON_BONE
+        );
+        context.add(EndTags.SURVIVES_ON_END_MOSS, EndBlocks.END_MOSS);
+        context.add(EndTags.SURVIVES_ON_END_STONE, CommonBlockTags.END_STONES);
+        context.add(
+                EndTags.SURVIVES_ON_END_STONE_OR_TREES,
+                EndTags.SURVIVES_ON_END_STONE,
+                BlockTags.LEAVES,
+                BlockTags.LOGS
+        );
+        context.add(EndTags.SURVIVES_ON_JUNGLE_MOSS, EndBlocks.JUNGLE_MOSS);
+        context.add(
+                EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM,
+                EndBlocks.END_MOSS,
+                EndBlocks.END_MYCELIUM,
+                EndBlocks.JUNGLE_MOSS
+        );
+        context.add(EndTags.SURVIVES_ON_MOSS_OR_DUST, EndBlocks.END_MOSS, EndBlocks.ENDSTONE_DUST);
+        context.add(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM, EndBlocks.END_MOSS, EndBlocks.END_MYCELIUM);
+        context.add(EndTags.SURVIVES_ON_PINK_MOSS, EndBlocks.PINK_MOSS);
+        context.add(EndTags.SURVIVES_ON_RUTISCUS, EndBlocks.RUTISCUS);
+        context.add(EndTags.SURVIVES_ON_SHADOW_GRASS, EndBlocks.SHADOW_GRASS);
+        context.add(EndTags.SURVIVES_ON_SULPHURIC_ROCK, EndBlocks.SULPHURIC_ROCK.getBaseBlock());
+
+    }
+
     @Override
     public void prepareTags(TagBootstrapContext<Block> context) {
         addEndGround(context, EndBlocks.THALLASIUM.getBlock(ORE));
@@ -75,5 +116,7 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         for (Block charnia : charnias) {
             context.add(EndTags.BONEMEAL_SOURCE_WATER_GRASS, charnia);
         }
+
+        addSurvivesOn(context);
     }
 }

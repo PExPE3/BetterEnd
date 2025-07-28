@@ -1,8 +1,8 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.bclib.items.tool.BaseShearsItem;
 import org.betterx.bclib.util.BlocksHelper;
+import org.betterx.bclib.util.LootUtil;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.entity.SilkMothEntity;
 import org.betterx.betterend.registry.EndEntities;
@@ -15,7 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +33,8 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.jetbrains.annotations.NotNull;
 
 public class SilkMothHiveBlock extends BaseBlock.Wood {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -78,9 +80,11 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
         if (!world.getBlockState(spawn).isAir()) {
             return;
         }
-        int count = world.getEntities(EndEntities.SILK_MOTH.type(), new AABB(pos).inflate(16), (entity) -> {
-            return true;
-        }).size();
+        int count = world.getEntities(
+                EndEntities.SILK_MOTH.type(), new AABB(pos).inflate(16), (entity) -> {
+                    return true;
+                }
+        ).size();
         if (count > 6) {
             return;
         }
@@ -94,38 +98,37 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
 
 
     @Override
-    @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
-            ItemStack itemStack,
-            BlockState state,
-            Level world,
-            BlockPos pos,
-            Player player,
-            InteractionHand hand,
-            BlockHitResult hit
+    protected @NotNull InteractionResult useItemOn(
+            @NotNull ItemStack itemStack,
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult blockHitResult
     ) {
         if (hand == InteractionHand.MAIN_HAND) {
             ItemStack stack = player.getMainHandItem();
-            if (BaseShearsItem.isShear(stack) && state.getValue(FULLNESS) == 3) {
-                BlocksHelper.setWithUpdate(world, pos, state.setValue(FULLNESS, 0));
+            if (LootUtil.isShear(stack) && state.getValue(FULLNESS) == 3) {
+                BlocksHelper.setWithUpdate(level, pos, state.setValue(FULLNESS, 0));
                 Direction dir = state.getValue(FACING);
                 double px = pos.getX() + dir.getStepX() + 0.5;
                 double py = pos.getY() + dir.getStepY() + 0.5;
                 double pz = pos.getZ() + dir.getStepZ() + 0.5;
-                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(8, 16, world.getRandom()));
-                ItemEntity entity = new ItemEntity(world, px, py, pz, drop);
-                world.addFreshEntity(entity);
-                if (world.getRandom().nextInt(4) == 0) {
+                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(8, 16, level.getRandom()));
+                ItemEntity entity = new ItemEntity(level, px, py, pz, drop);
+                level.addFreshEntity(entity);
+                if (level.getRandom().nextInt(4) == 0) {
                     drop = new ItemStack(EndItems.SILK_MOTH_MATRIX);
-                    entity = new ItemEntity(world, px, py, pz, drop);
-                    world.addFreshEntity(entity);
+                    entity = new ItemEntity(level, px, py, pz, drop);
+                    level.addFreshEntity(entity);
                 }
                 if (!player.isCreative()) {
                     stack.setDamageValue(stack.getDamageValue() + 1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 }

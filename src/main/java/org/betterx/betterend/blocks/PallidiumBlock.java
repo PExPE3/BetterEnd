@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+
+import org.jetbrains.annotations.NotNull;
 
 public class PallidiumBlock extends EndTerrainBlock {
     private final Block nextLevel;
@@ -30,24 +32,24 @@ public class PallidiumBlock extends EndTerrainBlock {
 
     @Override
     public Block getBaseBlock() {
-        return EndBlocks.UMBRALITH.stone;
+        return EndBlocks.UMBRALITH.getBaseBlock();
     }
 
 
     @Override
-    public ItemInteractionResult useItemOn(
-            ItemStack itemStack,
-            BlockState state,
+    protected @NotNull InteractionResult useItemOn(
+            @NotNull ItemStack itemStack,
+            @NotNull BlockState state,
             Level level,
-            BlockPos pos,
-            Player player,
-            InteractionHand hand,
-            BlockHitResult hit
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand interactionHand,
+            @NotNull BlockHitResult blockHitResult
     ) {
         if (nextLevel == null) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         } else if (level.isClientSide) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (itemStack.is(Items.BONE_MEAL)) {
@@ -55,8 +57,8 @@ public class PallidiumBlock extends EndTerrainBlock {
             if (!player.isCreative()) {
                 itemStack.shrink(1);
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 }

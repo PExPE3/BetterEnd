@@ -4,8 +4,8 @@ import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.interfaces.tools.AddMineableShears;
-import org.betterx.bclib.items.tool.BaseShearsItem;
 import org.betterx.bclib.util.BlocksHelper;
+import org.betterx.bclib.util.LootUtil;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.entity.SilkMothEntity;
 import org.betterx.betterend.registry.EndEntities;
@@ -19,7 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +28,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -41,10 +42,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import java.util.Collections;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider, AddMineableShears {
     public static final BooleanProperty ACTIVE = EndBlockProperties.ACTIVE;
@@ -55,11 +55,11 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
 
     public SilkMothNestBlock() {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
-                                 .hardness(0.5F)
-                                 .resistance(0.1F)
-                                 .sound(SoundType.WOOL)
-                                 .noOcclusion()
-                                 .randomTicks());
+                                       .hardness(0.5F)
+                                       .resistance(0.1F)
+                                       .sound(SoundType.WOOL)
+                                       .noOcclusion()
+                                       .randomTicks());
         this.registerDefaultState(defaultBlockState().setValue(ACTIVE, true).setValue(FULLNESS, 0));
     }
 
@@ -149,9 +149,11 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
         if (!world.getBlockState(spawn).isAir()) {
             return;
         }
-        int count = world.getEntities(EndEntities.SILK_MOTH.type(), new AABB(pos).inflate(16), (entity) -> {
-            return true;
-        }).size();
+        int count = world.getEntities(
+                EndEntities.SILK_MOTH.type(), new AABB(pos).inflate(16), (entity) -> {
+                    return true;
+                }
+        ).size();
         if (count > 6) {
             return;
         }
@@ -162,36 +164,36 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
         world.addFreshEntity(moth);
         world.playSound(null, pos, SoundEvents.BEEHIVE_EXIT, SoundSource.BLOCKS, 1, 1);
     }
-    
+
     @Override
-    protected ItemInteractionResult useItemOn(
-            ItemStack stack,
-            BlockState state,
-            Level world,
-            BlockPos pos,
-            Player player,
-            InteractionHand hand,
-            BlockHitResult hit
+    protected @NotNull InteractionResult useItemOn(
+            @NotNull ItemStack stack,
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult blockHitResult
     ) {
         if (hand == InteractionHand.MAIN_HAND) {
-            if (BaseShearsItem.isShear(stack) && state.getValue(ACTIVE) && state.getValue(FULLNESS) == 3) {
-                BlocksHelper.setWithUpdate(world, pos, state.setValue(FULLNESS, 0));
+            if (LootUtil.isShear(stack) && state.getValue(ACTIVE) && state.getValue(FULLNESS) == 3) {
+                BlocksHelper.setWithUpdate(level, pos, state.setValue(FULLNESS, 0));
                 Direction dir = state.getValue(FACING);
                 double px = pos.getX() + dir.getStepX() + 0.5;
                 double py = pos.getY() + dir.getStepY() + 0.5;
                 double pz = pos.getZ() + dir.getStepZ() + 0.5;
-                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(1, 4, world.getRandom()));
-                ItemEntity entity = new ItemEntity(world, px, py, pz, drop);
-                world.addFreshEntity(entity);
-                drop = new ItemStack(EndItems.SILK_MOTH_MATRIX, MHelper.randRange(1, 3, world.getRandom()));
-                entity = new ItemEntity(world, px, py, pz, drop);
-                world.addFreshEntity(entity);
+                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(1, 4, level.getRandom()));
+                ItemEntity entity = new ItemEntity(level, px, py, pz, drop);
+                level.addFreshEntity(entity);
+                drop = new ItemStack(EndItems.SILK_MOTH_MATRIX, MHelper.randRange(1, 3, level.getRandom()));
+                entity = new ItemEntity(level, px, py, pz, drop);
+                level.addFreshEntity(entity);
                 if (!player.isCreative()) {
                     stack.setDamageValue(stack.getDamageValue() + 1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 }

@@ -11,15 +11,15 @@ import org.betterx.wover.block.impl.trait.BlockTraitImpl;
 import org.betterx.wover.tag.api.predefined.MineableTags;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 public class IceBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> {
     private static final BlockTraitKey KEY = BlockTraitKey.ofUnique(BetterEnd.C, "ice");
-    public static final IceBlockTrait DEFAULT = new IceBlockTrait(Blocks.ICE);
-    public static final IceBlockTrait PACKED = new IceBlockTrait(Blocks.PACKED_ICE);
-    public static final IceBlockTrait BLUE = new IceBlockTrait(Blocks.BLUE_ICE);
 
     public final Block baseIceBlock;
+
+    public static IceBlockTrait withBase(Block baseIceBlock) {
+        return new IceBlockTrait(baseIceBlock);
+    }
 
     private IceBlockTrait(Block baseIceBlock) {
         super();
@@ -38,8 +38,6 @@ public class IceBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> {
                 .addTags(MineableTags.PICKAXE)
                 .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
                 .addTrait(BlockTraits.LOOT_TABLE.dropWithSilktouch())
-                .addTrait(ModelTraitLibrary.cube())
-        ;
-        ;
+                .addTrait(ModelTraitLibrary.cube());
     }
 }

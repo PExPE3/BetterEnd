@@ -22,7 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -33,6 +33,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -41,11 +42,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorProvider, RenderLayerProvider {
@@ -168,35 +168,37 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
-            ItemStack itemStack,
-            BlockState state,
-            Level world,
-            BlockPos pos,
-            Player player,
-            InteractionHand hand,
-            BlockHitResult hit
+    protected @NotNull InteractionResult useItemOn(
+            @NotNull ItemStack itemStack,
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult blockHitResult
     ) {
         boolean canActivate = itemStack.getItem() == EndItems.AMBER_GEM && itemStack.getCount() > 5;
         if (hand != InteractionHand.MAIN_HAND || !canActivate) {
-            if (!world.isClientSide && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
+            if (!level.isClientSide && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
                 ServerPlayer serverPlayerEntity = (ServerPlayer) player;
                 serverPlayerEntity.displayClientMessage(
                         Component.translatable("message.betterend.fail_spawn"),
                         true
                 );
             }
-            return ItemInteractionResult.FAIL;
-        } else if (!world.isClientSide) {
+            return InteractionResult.FAIL;
+        } else if (!level.isClientSide) {
             ServerPlayer serverPlayerEntity = (ServerPlayer) player;
-            serverPlayerEntity.setRespawnPosition(world.dimension(), pos, 0.0F, false, false);
+            serverPlayerEntity.setRespawnPosition(
+                    new ServerPlayer.RespawnConfig(level.dimension(), pos, 0.0F, false),
+                    false
+            );
             serverPlayerEntity.displayClientMessage(Component.translatable("message.betterend.set_spawn"), true);
             double px = pos.getX() + 0.5;
             double py = pos.getY() + 0.5;
             double pz = pos.getZ() + 0.5;
             InfusionParticleType particle = new InfusionParticleType(new ItemStack(EndItems.AMBER_GEM));
-            if (world instanceof ServerLevel) {
+            if (level instanceof ServerLevel) {
                 double py1 = py;
                 double py2 = py - 0.2;
                 if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
@@ -208,16 +210,16 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
                 } else {
                     py1 -= 2;
                 }
-                ((ServerLevel) world).sendParticles(particle, px, py1, pz, 20, 0.14, 0.5, 0.14, 0.1);
-                ((ServerLevel) world).sendParticles(particle, px, py2, pz, 20, 0.14, 0.3, 0.14, 0.1);
+                ((ServerLevel) level).sendParticles(particle, px, py1, pz, 20, 0.14, 0.5, 0.14, 0.1);
+                ((ServerLevel) level).sendParticles(particle, px, py2, pz, 20, 0.14, 0.3, 0.14, 0.1);
             }
-            world.playSound(null, px, py, py, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
+            level.playSound(null, px, py, py, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
             if (!player.isCreative()) {
                 itemStack.shrink(6);
             }
         }
         return player.isCreative()
-                ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
-                : ItemInteractionResult.sidedSuccess(world.isClientSide);
+                ? InteractionResult.TRY_WITH_EMPTY_HAND
+                : InteractionResult.SUCCESS;
     }
 }

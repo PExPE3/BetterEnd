@@ -1,10 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
@@ -18,26 +15,24 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
 
-public class EndLotusLeafBlock extends BaseBlockNotFull implements RenderLayerProvider, BehaviourPlant {
+public class EndLotusLeafBlock extends BaseBlockNotFull implements BehaviourPlant {
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape VSHAPE = Block.box(0, 0, 0, 16, 1, 16);
 
-    public EndLotusLeafBlock() {
-        super(BehaviourBuilders.createWalkablePlant(MapColor.COLOR_PINK).sound(SoundType.WET_GRASS));
+    public EndLotusLeafBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -71,13 +66,12 @@ public class EndLotusLeafBlock extends BaseBlockNotFull implements RenderLayerPr
     }
 
     @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    protected @NotNull ItemStack getCloneItemStack(
+            @NotNull LevelReader levelReader,
+            @NotNull BlockPos blockPos,
+            @NotNull BlockState blockState,
+            boolean bl
+    ) {
         return new ItemStack(EndBlocks.END_LOTUS_SEED);
     }
 }

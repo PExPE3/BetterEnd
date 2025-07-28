@@ -8,23 +8,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.MapColor;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import org.jetbrains.annotations.NotNull;
 
 public class UmbrellaTreeClusterEmptyBlock extends BaseBlock {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
-    public UmbrellaTreeClusterEmptyBlock() {
-        super(FabricBlockSettings
-                .copyOf(Blocks.NETHER_WART_BLOCK)
-                .mapColor(MapColor.COLOR_PURPLE)
-                .randomTicks()
-        );
+    public UmbrellaTreeClusterEmptyBlock(Properties props) {
+        super(props);
         registerDefaultState(stateDefinition.any().setValue(NATURAL, false));
     }
 
@@ -34,8 +28,12 @@ public class UmbrellaTreeClusterEmptyBlock extends BaseBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    public void tick(
+            BlockState state,
+            @NotNull ServerLevel world,
+            @NotNull BlockPos pos,
+            @NotNull RandomSource random
+    ) {
         if (state.getValue(NATURAL) && random.nextInt(16) == 0) {
             BlocksHelper.setWithUpdate(
                     world,

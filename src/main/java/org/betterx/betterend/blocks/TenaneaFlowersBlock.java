@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.fabricmc.api.EnvType;
@@ -22,8 +23,8 @@ import net.fabricmc.api.Environment;
 public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorProvider {
     public static final Vec3i[] COLORS;
 
-    public TenaneaFlowersBlock() {
-        super(15);
+    public TenaneaFlowersBlock(BlockBehaviour.Properties props) {
+        super(props, 15);
     }
 
     @Override

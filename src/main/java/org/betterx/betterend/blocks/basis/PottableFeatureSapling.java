@@ -8,6 +8,7 @@ import org.betterx.betterend.interfaces.PottablePlant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -18,8 +19,11 @@ public abstract class PottableFeatureSapling<F extends Feature<FC>, FC extends F
         super(featureSupplier);
     }
 
-    public PottableFeatureSapling(int light, FeatureSupplier<F, FC> featureSupplier) {
-        super(light, featureSupplier);
+    public PottableFeatureSapling(
+            BlockBehaviour.Properties properties,
+            FeatureSupplier<F, FC> featureSupplier
+    ) {
+        super(properties, featureSupplier);
     }
 
 
